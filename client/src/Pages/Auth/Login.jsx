@@ -23,7 +23,7 @@ export default function Login() {
       {/* darken so the white card pops */}
       <div className="absolute inset-0 bg-black/60" />
 
-      <div className="relative z-10 w-full max-w-6xl rounded-[28px] overflow-hidden shadow-2xl bg-white flex flex-col md:flex-row min-h-[700px]">
+      <div className="relative z-10 w-full max-w-6xl rounded-[28px] overflow-hidden shadow-2xl bg-white dark:bg-[#16161A] flex flex-col md:flex-row min-h-[700px]">
         {/* Left panel - image with quote (hidden on mobile) */}
         <div className="relative w-full md:w-1/2 p-3 hidden md:block">
           <div className="relative h-full min-h-[320px] md:min-h-0 rounded-[20px] overflow-hidden flex flex-col justify-between p-8 sm:p-10 bg-black">
@@ -79,32 +79,35 @@ export default function Login() {
               >
                 <path
                   d="M1 3C3 1 5 1 7 3C9 5 11 5 13 3C15 1 17 1 19 3"
-                  stroke="black"
+                  stroke="currentColor"
+                  className="text-black dark:text-white"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                 />
                 <path
                   d="M1 9C3 7 5 7 7 9C9 11 11 11 13 9C15 7 17 7 19 9"
-                  stroke="black"
+                  stroke="currentColor"
+                  className="text-black dark:text-white"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                 />
                 <path
                   d="M1 15C3 13 5 13 7 15C9 17 11 17 13 15C15 13 17 13 19 15"
-                  stroke="black"
+                  stroke="currentColor"
+                  className="text-black dark:text-white"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                 />
               </svg>
-              <span className="font-serif text-2xl tracking-tight">Cogie</span>
+              <span className="font-serif text-2xl tracking-tight dark:text-white">Cogie</span>
             </div>
 
             {/* Heading */}
             <div className="text-center mb-9">
-              <h2 className="font-serif text-4xl sm:text-[2.6rem] mb-3">
+              <h2 className="font-serif text-4xl sm:text-[2.6rem] mb-3 dark:text-white">
                 Welcome Back
               </h2>
-              <p className="text-gray-500 text-sm">
+              <p className="text-gray-500 dark:text-gray-400 text-sm">
                 Enter your email and password to access your account
               </p>
             </div>
@@ -117,7 +120,7 @@ export default function Login() {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-800 mb-1.5"
+                  className="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1.5"
                 >
                   Email
                 </label>
@@ -127,14 +130,14 @@ export default function Login() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="w-full rounded-xl bg-gray-100 border border-transparent px-4 py-3 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10 focus:bg-gray-50 transition"
+                  className="w-full rounded-xl bg-gray-100 dark:bg-[#25252E] border border-transparent px-4 py-3 text-sm text-gray-700 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/10 focus:bg-gray-50 dark:focus:bg-[#1E1E24] transition"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-gray-800 mb-1.5"
+                  className="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1.5"
                 >
                   Password
                 </label>
@@ -145,7 +148,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="w-full rounded-xl bg-gray-100 border border-transparent px-4 py-3 pr-11 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10 focus:bg-gray-50 transition"
+                    className="w-full rounded-xl bg-gray-100 dark:bg-[#25252E] border border-transparent px-4 py-3 pr-11 text-sm text-gray-700 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/10 focus:bg-gray-50 dark:focus:bg-[#1E1E24] transition"
                   />
                   <button
                     type="button"
@@ -163,18 +166,18 @@ export default function Login() {
               </div>
 
               <div className="flex items-center justify-between text-sm pt-1">
-                <label className="flex items-center gap-2 cursor-pointer select-none text-gray-600">
+                <label className="flex items-center gap-2 cursor-pointer select-none text-gray-600 dark:text-gray-400">
                   <input
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black/20 accent-black"
+                    className="w-4 h-4 rounded border-gray-300 dark:border-gray-700 text-black dark:text-white focus:ring-black/20 dark:focus:ring-white/20 accent-black dark:accent-white"
                   />
                   Remember me
                 </label>
                 <a
                   href="#"
-                  className="text-gray-800 hover:text-black font-medium"
+                  className="text-gray-800 dark:text-gray-200 hover:text-black dark:hover:text-white font-medium"
                 >
                   Forgot Password
                 </a>
@@ -182,23 +185,23 @@ export default function Login() {
 
               <button
                 type="submit"
-                className="w-full bg-black text-white rounded-xl py-3.5 text-sm font-semibold hover:bg-gray-900 transition mt-2"
+                className="w-full bg-black dark:bg-white text-white dark:text-black rounded-xl py-3.5 text-sm font-semibold hover:bg-gray-900 dark:hover:bg-gray-100 transition mt-2"
               >
                 Sign In
               </button>
 
               <button
                 type="button"
-                className="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-3.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
+                className="w-full flex items-center justify-center gap-2 border border-gray-200 dark:border-[#2C2C35] rounded-xl py-3.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-[#1E1E24] transition"
               >
                 <GoogleIcon />
                 Sign In with Google
               </button>
             </form>
 
-            <p className="text-center text-sm text-gray-500 mt-10">
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-10">
               Don&apos;t have an account?{" "}
-              <a href="#" className="text-black font-semibold">
+              <a href="#" className="text-black dark:text-white font-semibold">
                 Sign Up
               </a>
             </p>

@@ -41,21 +41,21 @@ export default function CalendarModal({ open, onClose, month, year, onSelect }) 
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 dark:bg-black/60 backdrop-blur-sm px-4"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-sm rounded-2xl bg-white shadow-2xl border border-[#E7E7EC] overflow-hidden"
+        className="w-full max-w-sm rounded-2xl bg-white dark:bg-[#16161A] shadow-2xl border border-[#E7E7EC] dark:border-[#22222A] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-[#EEEEF2]">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-[#EEEEF2] dark:border-[#22222A]">
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#9A99A6]">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#9A99A6] dark:text-[#8E8D9B]">
               Switch table view
             </p>
             <h2
-              className="text-[19px] font-semibold text-[#111111] mt-0.5"
+              className="text-[19px] font-semibold text-[#111111] dark:text-white mt-0.5"
               style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
             >
               Select month &amp; year
@@ -63,7 +63,7 @@ export default function CalendarModal({ open, onClose, month, year, onSelect }) 
           </div>
           <button
             onClick={onClose}
-            className="h-8 w-8 flex items-center justify-center rounded-full text-[#9A99A6] hover:bg-[#F1F1F5] transition-colors"
+            className="h-8 w-8 flex items-center justify-center rounded-full text-[#9A99A6] dark:text-[#8E8D9B] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors"
             aria-label="Close calendar"
           >
             <X size={16} />
@@ -71,20 +71,20 @@ export default function CalendarModal({ open, onClose, month, year, onSelect }) 
         </div>
 
         {/* Year switcher */}
-        <div className="flex items-center justify-center gap-4 px-6 py-4 border-b border-[#EEEEF2] bg-[#FAFAFC]">
+        <div className="flex items-center justify-center gap-4 px-6 py-4 border-b border-[#EEEEF2] dark:border-[#22222A] bg-[#FAFAFC] dark:bg-[#1C1C22]">
           <button
             onClick={() => setPendingYear((y) => y - 1)}
-            className="h-8 w-8 flex items-center justify-center rounded-lg border border-[#E4E4ED] bg-white text-[#5B5B66] hover:bg-[#F1F1F5] transition-colors"
+            className="h-8 w-8 flex items-center justify-center rounded-lg border border-[#E4E4ED] dark:border-[#2C2C35] bg-white dark:bg-[#16161A] text-[#5B5B66] dark:text-[#A1A1AA] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors"
             aria-label="Previous year"
           >
             <ChevronLeft size={15} />
           </button>
-          <span className="text-[15px] font-semibold font-mono text-[#111111] w-14 text-center">
+          <span className="text-[15px] font-semibold font-mono text-[#111111] dark:text-white w-14 text-center">
             {pendingYear}
           </span>
           <button
             onClick={() => setPendingYear((y) => y + 1)}
-            className="h-8 w-8 flex items-center justify-center rounded-lg border border-[#E4E4ED] bg-white text-[#5B5B66] hover:bg-[#F1F1F5] transition-colors"
+            className="h-8 w-8 flex items-center justify-center rounded-lg border border-[#E4E4ED] dark:border-[#2C2C35] bg-white dark:bg-[#16161A] text-[#5B5B66] dark:text-[#A1A1AA] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors"
             aria-label="Next year"
           >
             <ChevronRight size={15} />
@@ -104,7 +104,7 @@ export default function CalendarModal({ open, onClose, month, year, onSelect }) 
                 className={`relative rounded-lg py-2.5 text-[12.5px] font-medium transition-colors ${
                   isSelected
                     ? "text-white"
-                    : "text-[#5B5B66] bg-[#F5F5F7] hover:bg-[#EEEEF2]"
+                    : "text-[#5B5B66] dark:text-[#A1A1AA] bg-[#F5F5F7] dark:bg-[#25252E] hover:bg-[#EEEEF2] dark:hover:bg-[#2F2F39]"
                 }`}
                 style={
                   isSelected
@@ -125,16 +125,16 @@ export default function CalendarModal({ open, onClose, month, year, onSelect }) 
         </div>
 
         {/* Footer */}
-        <div className="flex items-center gap-3 px-6 py-4 border-t border-[#EEEEF2] bg-[#FAFAFC]">
+        <div className="flex items-center gap-3 px-6 py-4 border-t border-[#EEEEF2] dark:border-[#22222A] bg-[#FAFAFC] dark:bg-[#1C1C22]">
           <button
             onClick={onClose}
-            className="flex-1 rounded-lg border border-[#E4E4ED] bg-white text-[#5B5B66] text-[13px] font-medium py-2.5 hover:bg-[#F1F1F5] transition-colors"
+            className="flex-1 rounded-lg border border-[#E4E4ED] dark:border-[#2C2C35] bg-white dark:bg-[#16161A] text-[#5B5B66] dark:text-[#A1A1AA] text-[13px] font-medium py-2.5 hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={apply}
-            className="flex-1 rounded-lg bg-[#111111] text-white text-[13px] font-medium py-2.5 hover:bg-[#2A2A2A] transition-colors"
+            className="flex-1 rounded-lg bg-[#111111] dark:bg-white text-white dark:text-black text-[13px] font-medium py-2.5 hover:bg-[#2A2A2A] dark:hover:bg-gray-100 transition-colors"
           >
             View month
           </button>

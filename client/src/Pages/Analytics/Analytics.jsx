@@ -1,146 +1,209 @@
-import React from "react";
-import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import React, { useState, useMemo } from "react";
+import { TrendingUp, TrendingDown, Minus, Calendar, BarChart3, Sparkles } from "lucide-react";
+import CalendarModal    from "../../Components/Modals/CalendarModal";
+import Sidebar          from "../../Components/Sidebar/Sidebar";
+import ColumnStatCard   from "../../Components/Stats/ColumnStatCard";
+import { useJournal }  from "../../Context/JournalContext";
 
-const metrics = [
-  { label: "Avg. Deep Work", value: "6.4h", delta: "+1.4%", trend: "up" },
-  { label: "Consistency", value: "88.4%", delta: "+3.1%", trend: "up" },
-  { label: "Sleep Quality", value: "Optimal", delta: "0.0%", trend: "flat" },
-  { label: "Focus Sessions", value: "142", delta: "-2.0%", trend: "down" },
-];
+// ─── trend helpers ────────────────────────────────────────────────────────────
 
-const weeklyFocus = [
-  { day: "Mon", hours: 5.2 },
-  { day: "Tue", hours: 6.8 },
-  { day: "Wed", hours: 4.1 },
-  { day: "Thu", hours: 7.3 },
-  { day: "Fri", hours: 6.0 },
-  { day: "Sat", hours: 3.4 },
-  { day: "Sun", hours: 2.9 },
-];
+const trendIcon  = { up: TrendingUp, down: TrendingDown, flat: Minus };
+const trendColor = { up: "text-[#2DBFAE]", down: "text-[#C13A8A]", flat: "text-[#9A99A6]" };
 
-const trendIcon = {
-  up: TrendingUp,
-  down: TrendingDown,
-  flat: Minus,
-};
-
-const trendColor = {
-  up: "text-[#2DBFAE]",
-  down: "text-[#C13A8A]",
-  flat: "text-[#9A99A6]",
-};
+// ─── Analytics ───────────────────────────────────────────────────────────────
 
 export default function Analytics() {
-  const maxHours = Math.max(...weeklyFocus.map((d) => d.hours));
+  const {
+    selectedMonth,
+    selectedYear,
+    setSelectedMonth,
+    setSelectedYear,
+    monthLabel,
+    effectiveColumns,
+    currentEntries,
+  } = useJournal();
+
+  const [calendarOpen, setCalendarOpen] = useState(false);
+
+  // Only columns flagged for analytics
+  const trackedColumns = useMemo(
+    () => effectiveColumns.filter((c) => c.trackForAnalytics),
+    [effectiveColumns]
+  );
+
+  // ── KPI summary ────────────────────────────────────────────────────────────
+  const kpiCards = useMemo(() => {
+    const ratings = currentEntries
+      .map((e) => parseFloat(e.rating))
+      .filter((v) => !isNaN(v) && v > 0);
+
+    const avg = (arr) =>
+      arr.length ? (arr.reduce((s, v) => s + v, 0) / arr.length).toFixed(1) : "—";
+
+    const daysWithActivity = currentEntries.filter((e) =>
+      Object.values(e.cells).some(Boolean) ||
+      (e.rating && String(e.rating).trim() !== "") ||
+      (e.deepWork && String(e.deepWork).trim() !== "") ||
+      (e.sleep && String(e.sleep).trim() !== "")
+    ).length;
+    const consistency = currentEntries.length
+      ? Math.round((daysWithActivity / currentEntries.length) * 100)
+      : 0;
+
+    // Dynamic max streak calculation
+    let maxStreak = 0;
+    let currStreak = 0;
+    for (const entry of currentEntries) {
+      const hasActivity = Object.values(entry.cells).some(Boolean) ||
+        (entry.rating && String(entry.rating).trim() !== "") ||
+        (entry.deepWork && String(entry.deepWork).trim() !== "") ||
+        (entry.sleep && String(entry.sleep).trim() !== "");
+      if (hasActivity) {
+        currStreak++;
+        if (currStreak > maxStreak) {
+          maxStreak = currStreak;
+        }
+      } else {
+        currStreak = 0;
+      }
+    }
+
+    return [
+      {
+        label: "Avg. Rating",
+        value: ratings.length ? `${avg(ratings)}/10` : "—",
+        delta: ratings.length
+          ? parseFloat(avg(ratings)) >= 6 ? "↑ good" : "↓ low"
+          : "no data",
+        trend: ratings.length && parseFloat(avg(ratings)) >= 6 ? "up" : (ratings.length ? "down" : "flat"),
+      },
+      {
+        label: "Consistency",
+        value: `${consistency}%`,
+        delta: consistency > 70 ? "on track" : "needs focus",
+        trend: consistency > 70 ? "up" : "down",
+      },
+      {
+        label: "Streak",
+        value: `${maxStreak} day${maxStreak !== 1 ? "s" : ""}`,
+        delta: maxStreak > 0 ? "best streak" : "no active streak",
+        trend: maxStreak > 0 ? "up" : "flat",
+      },
+    ];
+  }, [currentEntries]);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1
-          className="text-[21px] font-semibold text-[#111111]"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-        >
-          Analytics
-        </h1>
-        <p className="text-[12.5px] text-[#9A99A6] mt-0.5">
-          Efficiency trends across the last 30 days
-        </p>
-      </div>
+    <div className="h-screen w-full bg-[#F5F5F7] dark:bg-[#0C0C0E] flex overflow-hidden font-sans text-[#111111] dark:text-[#FAFAFC]">
+      {/* ── Shared Sidebar ── */}
+      <Sidebar />
 
-      {/* KPI cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {metrics.map((m) => {
-          const Icon = trendIcon[m.trend];
-          return (
-            <div
-              key={m.label}
-              className="rounded-xl border border-[#E7E7EC] bg-white px-4 py-3.5"
+      {/* ── Main ── */}
+      <main className="flex-1 px-7 py-5 overflow-y-auto">
+
+        {/* ── Page header ── */}
+        <div className="flex items-start justify-between mb-6">
+          <div>
+            <h1
+              className="text-[21px] font-semibold text-[#111111] dark:text-white"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
             >
-              <p className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#9A99A6]">
-                {m.label}
-              </p>
-              <div className="flex items-end justify-between mt-1.5">
-                <span className="text-[20px] font-semibold text-[#111111]">
-                  {m.value}
-                </span>
-                <span
-                  className={`flex items-center gap-1 text-[11px] font-mono ${trendColor[m.trend]}`}
+              Analytics
+            </h1>
+            <p className="text-[12.5px] text-[#9A99A6] dark:text-[#8E8D9B] mt-0.5 flex items-center gap-1.5">
+              <Sparkles size={11} className="text-[#E8924A]" />
+              {monthLabel} · {trackedColumns.length} column{trackedColumns.length !== 1 ? "s" : ""} tracked
+            </p>
+          </div>
+
+          {/* Month switcher — synced with Dashboard */}
+          <button
+            onClick={() => setCalendarOpen(true)}
+            className="flex items-center gap-1.5 rounded-lg border border-[#E4E4ED] dark:border-[#2C2C35] bg-white dark:bg-[#16161A] px-3 py-1.5 text-[12px] font-medium text-[#6B6B76] dark:text-[#A1A1AA] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors"
+            aria-label="Switch month"
+          >
+            <Calendar size={14} />
+            {monthLabel}
+          </button>
+        </div>
+
+        <div className="space-y-6">
+
+          {/* ── KPI cards ── */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {kpiCards.map((m) => {
+              const Icon = trendIcon[m.trend];
+              return (
+                <div
+                  key={m.label}
+                  className="rounded-xl border border-[#E7E7EC] dark:border-[#22222A] bg-white dark:bg-[#16161A] px-4 py-3.5 hover:shadow-sm transition-shadow"
                 >
-                  <Icon size={11} />
-                  {m.delta}
+                  <p className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#9A99A6] dark:text-[#8E8D9B]">
+                    {m.label}
+                  </p>
+                  <div className="flex items-end justify-between mt-1.5">
+                    <span className="text-[20px] font-semibold text-[#111111] dark:text-white">
+                      {m.value}
+                    </span>
+                    <span className={`flex items-center gap-1 text-[11px] font-mono ${trendColor[m.trend]}`}>
+                      <Icon size={11} />
+                      {m.delta}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* ── Per-column stat cards ── */}
+          {trackedColumns.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-[#D4D4DE] dark:border-[#2C2C35] bg-white dark:bg-[#16161A] px-8 py-12 text-center">
+              <BarChart3 size={28} className="text-[#D4D4DE] dark:text-[#66667A] mx-auto mb-3" />
+              <p className="text-[13.5px] font-medium text-[#6B6B76] dark:text-[#A1A1AA]">
+                No columns are tracked for analytics yet
+              </p>
+              <p className="text-[11.5px] text-[#C3C3D1] dark:text-[#71717A] mt-1 max-w-xs mx-auto">
+                Open any column header in the Dashboard, then toggle{" "}
+                <span className="font-semibold text-[#9A99A6] dark:text-[#8E8D9B]">Track for Analytics</span> on.
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="flex items-center gap-2">
+                <BarChart3 size={13} className="text-[#2DBFAE]" />
+                <p className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#9A99A6] dark:text-[#8E8D9B]">
+                  Column breakdown · {monthLabel}
+                </p>
+                <span className="ml-auto text-[10.5px] text-[#C3C3D1] dark:text-[#71717A] italic">
+                  Use the dropdown on each card to switch chart type
                 </span>
               </div>
-            </div>
-          );
-        })}
-      </div>
 
-      {/* Weekly bar chart */}
-      <div className="rounded-xl border border-[#E7E7EC] bg-white px-5 py-5">
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#9A99A6]">
-            Focus distribution
-          </p>
-          <span className="text-[11px] text-[#9A99A6] font-mono">Last 7 days</span>
-        </div>
-        <div className="flex items-end gap-3 h-40">
-          {weeklyFocus.map((d) => (
-            <div key={d.day} className="flex-1 flex flex-col items-center gap-2">
-              <div className="w-full flex items-end h-32">
-                <div
-                  className="w-full rounded-md"
-                  style={{
-                    height: `${(d.hours / maxHours) * 100}%`,
-                    backgroundImage:
-                      "linear-gradient(180deg, #2DBFAE 0%, #E8924A 60%, #C13A8A 100%)",
-                  }}
-                  title={`${d.hours}h`}
-                />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {trackedColumns.map((col) => (
+                  <ColumnStatCard
+                    key={col.id}
+                    column={col}
+                    entries={currentEntries}
+                    monthLabel={monthLabel}
+                  />
+                ))}
               </div>
-              <span className="text-[10.5px] text-[#9A99A6] font-mono uppercase">
-                {d.day}
-              </span>
-            </div>
-          ))}
+            </>
+          )}
         </div>
-      </div>
+      </main>
 
-      {/* Breakdown table */}
-      <div className="rounded-xl border border-[#E7E7EC] bg-white overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-[#EEEEF2]">
-          <p className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#9A99A6]">
-            Category breakdown
-          </p>
-        </div>
-        <div className="divide-y divide-[#F1F1F5]">
-          {[
-            { label: "English", pct: 74 },
-            { label: "Communication", pct: 61 },
-            { label: "Technical", pct: 88 },
-            { label: "Reading", pct: 45 },
-            { label: "Speaking", pct: 58 },
-          ].map((row) => (
-            <div key={row.label} className="flex items-center gap-4 px-5 py-3">
-              <span className="text-[12px] text-[#5B5B66] w-32 shrink-0">
-                {row.label}
-              </span>
-              <div className="flex-1 h-2 rounded-full bg-[#EEEEF2] overflow-hidden">
-                <div
-                  className="h-full rounded-full"
-                  style={{
-                    width: `${row.pct}%`,
-                    backgroundImage:
-                      "linear-gradient(90deg, #C13A8A 0%, #E8924A 55%, #2DBFAE 100%)",
-                  }}
-                />
-              </div>
-              <span className="text-[11.5px] font-mono text-[#9A99A6] w-10 text-right">
-                {row.pct}%
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* ── Calendar Modal ── */}
+      <CalendarModal
+        open={calendarOpen}
+        onClose={() => setCalendarOpen(false)}
+        month={selectedMonth}
+        year={selectedYear}
+        onSelect={(m, y) => {
+          setSelectedMonth(m);
+          setSelectedYear(y);
+        }}
+      />
     </div>
   );
 }
