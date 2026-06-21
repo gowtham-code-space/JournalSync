@@ -7,14 +7,17 @@ import {
   Plus,
   Pencil,
   ChevronRight,
+  Menu,
 } from "lucide-react";
 import MilestoneModal    from "../../Components/Modals/MilestoneModal";
 import CalendarModal     from "../../Components/Modals/CalendarModal";
 import ColumnEditorModal from "../../Components/Modals/ColumnEditorModal";
+import CommentModal      from "../../Components/Modals/CommentModal";
 import Sidebar           from "../../Components/Sidebar/Sidebar";
 import { useJournal }   from "../../Context/JournalContext";
+import { useSidebarStore } from "../../store/useSidebarStore";
 
-// ─── cell components ─────────────────────────────────────────────────────────
+// ─── cell components ──────────────────────────────────────────────────────────
 
 function BoxCell({ value, onChange, label }) {
   const checked = Boolean(value);
@@ -24,13 +27,15 @@ function BoxCell({ value, onChange, label }) {
       aria-pressed={checked}
       aria-label={`Toggle ${label}`}
       className={`h-8 w-full transition-colors ${
-        checked ? "bg-[#2DBFAE]" : "bg-[#E7E8F3] hover:bg-[#DADBF0] dark:bg-[#25252E] dark:hover:bg-[#2F2F39]"
+        checked
+          ? "bg-[#2DBFAE]"
+          : "bg-[#E7E8F3] hover:bg-[#DADBF0] dark:bg-[#25252E] dark:hover:bg-[#2F2F39]"
       }`}
     />
   );
 }
 
-function DataCell({ column, value, onChange }) {
+function DataCell({ column, value, onChange, onOpenComment }) {
   if (column.type === "box") {
     return <BoxCell value={value} onChange={onChange} label={column.label} />;
   }
@@ -45,6 +50,23 @@ function DataCell({ column, value, onChange }) {
           column.id === "sleep" ? "text-[#2DBFAE]" : "text-[#111111] dark:text-white"
         } outline-none focus:border-[#E4E4ED] focus:bg-[#FAFAFC] focus:dark:border-[#2C2C35] focus:dark:bg-[#1E1E24]`}
       />
+    );
+  }
+  // comment type — clickable preview, opens full modal
+  if (column.type === "comment" && onOpenComment) {
+    const hasValue = value && String(value).trim() !== "";
+    return (
+      <button
+        onClick={onOpenComment}
+        className={`w-32 text-left rounded-md border border-transparent px-1 py-0.5 text-[12px] italic truncate transition-colors hover:border-[#E4E4ED] dark:hover:border-[#2C2C35] hover:bg-[#FAFAFC] dark:hover:bg-[#1E1E24] ${
+          hasValue
+            ? "text-[#5B5B66] dark:text-[#A1A1AA]"
+            : "text-[#C3C3D1] dark:text-[#555]"
+        }`}
+        title={hasValue ? value : `Add ${column.label.toLowerCase()}...`}
+      >
+        {hasValue ? value : `Add ${column.label.toLowerCase()}...`}
+      </button>
     );
   }
   return (
@@ -78,38 +100,41 @@ export default function Dashboard() {
   const [milestoneOpen, setMilestoneOpen] = useState(false);
   const [calendarOpen,  setCalendarOpen]  = useState(false);
   const [columnEditor,  setColumnEditor]  = useState({ open: false, column: null });
+  const [commentModal,  setCommentModal]  = useState({ open: false, row: null, column: null });
+  const toggleSidebar = useSidebarStore((state) => state.toggle);
 
+  // ── Streak ─────────────────────────────────────────────────────────────────
   const streakDays = useMemo(() => {
-    let max = 0;
-    let curr = 0;
+    let max = 0, curr = 0;
     for (const entry of currentEntries) {
-      const hasActivity = Object.values(entry.cells).some(Boolean) ||
-        (entry.rating && String(entry.rating).trim() !== "") ||
+      const hasActivity =
+        Object.values(entry.cells).some(Boolean) ||
+        (entry.rating   && String(entry.rating).trim()   !== "") ||
         (entry.deepWork && String(entry.deepWork).trim() !== "") ||
-        (entry.sleep && String(entry.sleep).trim() !== "");
-      if (hasActivity) {
-        curr++;
-        if (curr > max) max = curr;
-      } else {
-        curr = 0;
-      }
+        (entry.sleep    && String(entry.sleep).trim()    !== "");
+      if (hasActivity) { curr++; if (curr > max) max = curr; }
+      else curr = 0;
     }
     return max;
   }, [currentEntries]);
 
+  // ── Column groups ──────────────────────────────────────────────────────────
   const firstBoxIndex = effectiveColumns.findIndex((c) => c.type === "box");
-  const leftColumns = useMemo(() => {
-    return firstBoxIndex === -1 ? effectiveColumns : effectiveColumns.slice(0, firstBoxIndex);
-  }, [effectiveColumns, firstBoxIndex]);
 
-  const boxColumns = useMemo(() => {
-    return effectiveColumns.filter((c) => c.type === "box");
-  }, [effectiveColumns]);
+  const leftColumns = useMemo(() =>
+    firstBoxIndex === -1 ? effectiveColumns : effectiveColumns.slice(0, firstBoxIndex),
+    [effectiveColumns, firstBoxIndex]
+  );
+  const boxColumns = useMemo(() =>
+    effectiveColumns.filter((c) => c.type === "box"),
+    [effectiveColumns]
+  );
+  const rightColumns = useMemo(() =>
+    firstBoxIndex === -1 ? [] : effectiveColumns.slice(firstBoxIndex).filter((c) => c.type !== "box"),
+    [effectiveColumns, firstBoxIndex]
+  );
 
-  const rightColumns = useMemo(() => {
-    return firstBoxIndex === -1 ? [] : effectiveColumns.slice(firstBoxIndex).filter((c) => c.type !== "box");
-  }, [effectiveColumns, firstBoxIndex]);
-
+  // ── Helpers ────────────────────────────────────────────────────────────────
   const getCellValue = (row, colId) => {
     if (colId in row) return row[colId];
     return row.cells?.[colId];
@@ -123,34 +148,55 @@ export default function Dashboard() {
     }
   };
 
+  // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <div className="h-screen w-full bg-[#F5F5F7] dark:bg-[#0C0C0E] flex overflow-hidden font-sans text-[#111111] dark:text-[#FAFAFC]">
-      {/* ── Shared Sidebar ── */}
+
+      {/* ── Sidebar ── */}
       <Sidebar />
 
-      {/* ── Main content ── */}
-      <main className="flex-1 px-7 py-5 overflow-y-auto">
-        {/* Top bar */}
-        <div className="flex items-center gap-4 mb-6">
-          <div className="flex-1 max-w-md flex items-center gap-2 rounded-lg border border-[#E4E4ED] dark:border-[#22222A] bg-[#E8EAF6] dark:bg-[#1E1E24] px-3 py-2">
-            <Search size={14} className="text-[#7C7C9A] dark:text-[#8E8D9B]" />
+      {/* ── Main ── */}
+      <main className="flex-1 min-w-0 overflow-y-auto">
+
+        {/* ── Top bar ── */}
+        <div className="sticky top-0 z-10 bg-[#F5F5F7]/90 dark:bg-[#0C0C0E]/90 backdrop-blur-md border-b border-[#E7E7EC] dark:border-[#22222A] px-4 sm:px-7 py-3 flex items-center gap-3">
+          {/* Hamburger — mobile only */}
+          <button
+            onClick={toggleSidebar}
+            className="md:hidden h-9 w-9 flex items-center justify-center rounded-lg border border-[#E4E4ED] dark:border-[#22222A] bg-white dark:bg-[#16161A] text-[#6B6B76] dark:text-[#A1A1AA] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors shrink-0"
+            aria-label="Open sidebar"
+          >
+            <Menu size={16} />
+          </button>
+
+          {/* Search */}
+          <div className="flex-1 max-w-sm flex items-center gap-2 rounded-lg border border-[#E4E4ED] dark:border-[#22222A] bg-[#E8EAF6] dark:bg-[#1E1E24] px-3 py-2">
+            <Search size={13} className="text-[#7C7C9A] dark:text-[#8E8D9B] shrink-0" />
             <input
-              placeholder="Search metrics or logs..."
-              className="flex-1 text-[13px] outline-none placeholder:text-[#9494B3] dark:placeholder:text-[#66667A] bg-transparent text-[#111111] dark:text-[#FAFAFC]"
+              placeholder="Search..."
+              className="flex-1 min-w-0 text-[13px] outline-none placeholder:text-[#9494B3] dark:placeholder:text-[#66667A] bg-transparent text-[#111111] dark:text-[#FAFAFC]"
             />
           </div>
-          <button className="h-9 w-9 flex items-center justify-center rounded-lg border border-[#E4E4ED] dark:border-[#22222A] bg-white dark:bg-[#16161A] text-[#6B6B76] dark:text-[#A1A1AA] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors">
-            <Bell size={15} />
-          </button>
-          <button className="h-9 w-9 flex items-center justify-center rounded-lg border border-[#E4E4ED] dark:border-[#22222A] bg-white dark:bg-[#16161A] text-[#6B6B76] dark:text-[#A1A1AA] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors">
-            <Settings size={15} />
-          </button>
+
+          {/* Icon buttons — hidden on very small screens */}
+          <div className="hidden sm:flex items-center gap-2">
+            <button className="h-9 w-9 flex items-center justify-center rounded-lg border border-[#E4E4ED] dark:border-[#22222A] bg-white dark:bg-[#16161A] text-[#6B6B76] dark:text-[#A1A1AA] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors">
+              <Bell size={15} />
+            </button>
+            <button className="h-9 w-9 flex items-center justify-center rounded-lg border border-[#E4E4ED] dark:border-[#22222A] bg-white dark:bg-[#16161A] text-[#6B6B76] dark:text-[#A1A1AA] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors">
+              <Settings size={15} />
+            </button>
+          </div>
         </div>
 
-        <div className="space-y-5">
-          {/* Streak + Milestones row */}
-          <div className="flex gap-4">
-            <div className="rounded-xl border border-[#E7E7EC] dark:border-[#22222A] bg-white dark:bg-[#16161A] px-6 py-5 flex flex-col items-center justify-center w-40 shrink-0">
+        {/* ── Page body ── */}
+        <div className="px-4 sm:px-7 py-5 space-y-5">
+
+          {/* ── Streak + Milestones row ── */}
+          <div className="flex flex-col sm:flex-row gap-4">
+
+            {/* Streak card */}
+            <div className="rounded-xl border border-[#E7E7EC] dark:border-[#22222A] bg-white dark:bg-[#16161A] px-6 py-5 flex items-center sm:flex-col sm:items-center sm:justify-center gap-4 sm:gap-0 sm:w-40 shrink-0">
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
                 <defs>
                   <linearGradient id="flameGradient" x1="0%" y1="100%" x2="100%" y2="0%">
@@ -169,29 +215,32 @@ export default function Dashboard() {
                   className="dark:fill-[#2B2332]"
                 />
               </svg>
-              <p className="text-[20px] font-bold text-[#111111] dark:text-white mt-2 leading-none">
-                {streakDays}
-              </p>
-              <p className="text-[10.5px] text-[#9A99A6] dark:text-[#8E8D9B] mt-1 uppercase tracking-wide">
-                Day streak
-              </p>
+              <div className="sm:text-center sm:mt-2">
+                <p className="text-[22px] font-bold text-[#111111] dark:text-white leading-none">
+                  {streakDays}
+                </p>
+                <p className="text-[10.5px] text-[#9A99A6] dark:text-[#8E8D9B] mt-1 uppercase tracking-wide">
+                  Day streak
+                </p>
+              </div>
             </div>
 
-            <div className="flex-1 rounded-xl border border-[#E7E7EC] dark:border-[#22222A] bg-white dark:bg-[#16161A] px-6 py-5 flex items-center justify-between">
-              <div>
+            {/* Milestones card */}
+            <div className="flex-1 rounded-xl border border-[#E7E7EC] dark:border-[#22222A] bg-white dark:bg-[#16161A] px-5 sm:px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="min-w-0">
                 <p className="text-[10.5px] font-semibold uppercase tracking-[0.1em] text-[#9A99A6] dark:text-[#8E8D9B]">
                   This month
                 </p>
                 <p className="text-[14px] font-semibold text-[#111111] dark:text-white mt-1">
                   3 milestones in progress
                 </p>
-                <p className="text-[11.5px] text-[#9A99A6] dark:text-[#8E8D9B] mt-0.5">
+                <p className="text-[11.5px] text-[#9A99A6] dark:text-[#8E8D9B] mt-0.5 truncate">
                   Spanish fluency &middot; Project Alpha &middot; Ideas &amp; backlog
                 </p>
               </div>
               <button
                 onClick={() => setMilestoneOpen(true)}
-                className="flex items-center gap-1.5 rounded-lg bg-[#111111] dark:bg-[#FAFAFC] text-white dark:text-[#111111] text-[12.5px] font-semibold px-4 py-2.5 hover:bg-[#2A2A2A] dark:hover:bg-[#E2E2E6] transition-colors shrink-0"
+                className="flex items-center gap-1.5 rounded-lg bg-[#111111] dark:bg-[#FAFAFC] text-white dark:text-[#111111] text-[12.5px] font-semibold px-4 py-2.5 hover:bg-[#2A2A2A] dark:hover:bg-[#E2E2E6] transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start"
               >
                 Monthly Milestones
                 <ChevronRight size={13} />
@@ -199,35 +248,39 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Table card */}
+          {/* ── Journal table card ── */}
           <div className="rounded-xl border border-[#E7E7EC] dark:border-[#22222A] bg-white dark:bg-[#16161A] overflow-hidden">
-            <div className="flex items-center justify-between px-6 pt-5 pb-4">
+
+            {/* Card header */}
+            <div className="flex items-center justify-between px-4 sm:px-6 pt-5 pb-4 gap-3">
               <h2
-                className="text-[18px] font-semibold text-[#111111] dark:text-white"
+                className="text-[17px] sm:text-[18px] font-semibold text-[#111111] dark:text-white truncate"
                 style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
               >
                 {monthLabel}
               </h2>
               <button
                 onClick={() => setCalendarOpen(true)}
-                className="flex items-center gap-1.5 rounded-lg border border-[#E4E4ED] dark:border-[#2C2C35] bg-white dark:bg-[#16161A] px-3 py-1.5 text-[12px] font-medium text-[#6B6B76] dark:text-[#A1A1AA] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors"
+                className="flex items-center gap-1.5 rounded-lg border border-[#E4E4ED] dark:border-[#2C2C35] bg-white dark:bg-[#16161A] px-3 py-1.5 text-[12px] font-medium text-[#6B6B76] dark:text-[#A1A1AA] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors shrink-0"
                 aria-label="Switch month"
               >
                 <Calendar size={14} />
-                Switch month
+                <span className="hidden xs:inline">Switch month</span>
+                <span className="xs:hidden">Month</span>
               </button>
             </div>
 
+            {/* Table — horizontally scrollable on mobile */}
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-y border-[#EEEEF2] dark:border-[#22222A] bg-[#FAFAFC] dark:bg-[#1C1C22]">
                     {/* Date */}
-                    <th className="text-left pl-6 py-2.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#9A99A6] dark:text-[#8E8D9B] whitespace-nowrap">
+                    <th className="text-left pl-4 sm:pl-6 py-2.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#9A99A6] dark:text-[#8E8D9B] whitespace-nowrap">
                       Date
                     </th>
 
-                    {/* Left Columns (e.g. Comment) */}
+                    {/* Left columns */}
                     {leftColumns.map((col) => (
                       <th
                         key={col.id}
@@ -279,7 +332,7 @@ export default function Dashboard() {
                       </th>
                     )}
 
-                    {/* Right Columns (e.g. Rating, Deep work, Sleep) */}
+                    {/* Right columns */}
                     {rightColumns.map((col) => (
                       <th
                         key={col.id}
@@ -298,7 +351,7 @@ export default function Dashboard() {
                       </th>
                     ))}
 
-                    {/* If no box columns, and no left/right columns, show add button */}
+                    {/* Fallback add button when no columns */}
                     {boxColumns.length === 0 && leftColumns.length === 0 && rightColumns.length === 0 && (
                       <th className="py-2.5 px-2">
                         <button
@@ -312,26 +365,32 @@ export default function Dashboard() {
                     )}
                   </tr>
                 </thead>
+
                 <tbody className="divide-y divide-[#F1F1F5] dark:divide-[#22222A]">
                   {currentEntries.map((row) => (
                     <tr key={row.id} className="hover:bg-[#FAFAFC] dark:hover:bg-[#1C1C22] transition-colors">
                       {/* Date */}
-                      <td className="pl-6 py-2 text-[12px] font-mono text-[#5B5B66] dark:text-[#A1A1AA] whitespace-nowrap">
+                      <td className="pl-4 sm:pl-6 py-2 text-[12px] font-mono text-[#5B5B66] dark:text-[#A1A1AA] whitespace-nowrap">
                         {row.day}
                       </td>
 
-                      {/* Left Columns (e.g. Comment) */}
+                      {/* Left columns */}
                       {leftColumns.map((col) => (
                         <td key={col.id} className="py-2 px-2">
                           <DataCell
                             column={col}
                             value={getCellValue(row, col.id)}
                             onChange={(val) => updateCellValue(row.id, col.id, val)}
+                            onOpenComment={
+                              col.type === "comment"
+                                ? () => setCommentModal({ open: true, row, column: col })
+                                : undefined
+                            }
                           />
                         </td>
                       ))}
 
-                      {/* Box columns — flush grid */}
+                      {/* Box columns */}
                       {boxColumns.length > 0 && (
                         <td colSpan={boxColumns.length} className="py-0">
                           <div className="flex" style={{ height: "32px" }}>
@@ -355,7 +414,7 @@ export default function Dashboard() {
                         </td>
                       )}
 
-                      {/* Right Columns (e.g. Rating, Deep work, Sleep) */}
+                      {/* Right columns */}
                       {rightColumns.map((col) => (
                         <td key={col.id} className="py-2 px-2">
                           <DataCell
@@ -371,12 +430,20 @@ export default function Dashboard() {
               </table>
             </div>
 
-            <div className="flex items-center justify-between px-6 py-3 bg-[#FAFAFC] dark:bg-[#1C1C22] border-t border-[#EEEEF2] dark:border-[#22222A]">
+            {/* Card footer */}
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3 bg-[#FAFAFC] dark:bg-[#1C1C22] border-t border-[#EEEEF2] dark:border-[#22222A]">
               <button
                 onClick={() => setCalendarOpen(true)}
                 className="text-[11.5px] text-[#6B6B76] dark:text-[#A1A1AA] hover:text-[#111111] dark:hover:text-white transition-colors underline decoration-dotted"
               >
                 {currentEntries.length} days &middot; switch month
+              </button>
+              <button
+                onClick={() => setColumnEditor({ open: true, column: null })}
+                className="flex items-center gap-1 text-[11.5px] text-[#6B6B76] dark:text-[#A1A1AA] hover:text-[#2DBFAE] transition-colors"
+              >
+                <Plus size={12} />
+                Add column
               </button>
             </div>
           </div>
@@ -402,6 +469,19 @@ export default function Dashboard() {
         monthLabel={monthLabel}
         onSave={handleSaveColumn}
         onDelete={handleDeleteColumn}
+      />
+      <CommentModal
+        open={commentModal.open}
+        onClose={() => setCommentModal({ open: false, row: null, column: null })}
+        value={commentModal.row ? getCellValue(commentModal.row, commentModal.column?.id) ?? "" : ""}
+        columnLabel={commentModal.column?.label}
+        dateLabel={commentModal.row?.day}
+        onSave={(val) => {
+          if (commentModal.row && commentModal.column) {
+            updateCellValue(commentModal.row.id, commentModal.column.id, val);
+          }
+          setCommentModal({ open: false, row: null, column: null });
+        }}
       />
     </div>
   );

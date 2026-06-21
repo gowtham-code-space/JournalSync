@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from "react";
-import { TrendingUp, TrendingDown, Minus, Calendar, BarChart3, Sparkles } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, Calendar, BarChart3, Sparkles, Menu } from "lucide-react";
 import CalendarModal    from "../../Components/Modals/CalendarModal";
 import Sidebar          from "../../Components/Sidebar/Sidebar";
 import ColumnStatCard   from "../../Components/Stats/ColumnStatCard";
 import { useJournal }  from "../../Context/JournalContext";
+import { useSidebarStore } from "../../store/useSidebarStore";
 
 // ─── trend helpers ────────────────────────────────────────────────────────────
 
@@ -24,6 +25,7 @@ export default function Analytics() {
   } = useJournal();
 
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const toggleSidebar = useSidebarStore((state) => state.toggle);
 
   // Only columns flagged for analytics
   const trackedColumns = useMemo(
@@ -102,17 +104,26 @@ export default function Analytics() {
 
         {/* ── Page header ── */}
         <div className="flex items-start justify-between mb-6">
-          <div>
-            <h1
-              className="text-[21px] font-semibold text-[#111111] dark:text-white"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleSidebar}
+              className="md:hidden h-9 w-9 flex items-center justify-center rounded-lg border border-[#E4E4ED] dark:border-[#22222A] bg-white dark:bg-[#16161A] text-[#6B6B76] dark:text-[#A1A1AA] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors shrink-0"
+              aria-label="Toggle sidebar"
             >
-              Analytics
-            </h1>
-            <p className="text-[12.5px] text-[#9A99A6] dark:text-[#8E8D9B] mt-0.5 flex items-center gap-1.5">
-              <Sparkles size={11} className="text-[#E8924A]" />
-              {monthLabel} · {trackedColumns.length} column{trackedColumns.length !== 1 ? "s" : ""} tracked
-            </p>
+              <Menu size={16} />
+            </button>
+            <div>
+              <h1
+                className="text-[21px] font-semibold text-[#111111] dark:text-white"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                Analytics
+              </h1>
+              <p className="text-[12.5px] text-[#9A99A6] dark:text-[#8E8D9B] mt-0.5 flex items-center gap-1.5">
+                <Sparkles size={11} className="text-[#E8924A]" />
+                {monthLabel} · {trackedColumns.length} column{trackedColumns.length !== 1 ? "s" : ""} tracked
+              </p>
+            </div>
           </div>
 
           {/* Month switcher — synced with Dashboard */}
