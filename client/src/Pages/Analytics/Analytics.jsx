@@ -25,9 +25,9 @@ const trendIcon = {
 };
 
 const trendColor = {
-  up: "text-[#3E7A4C]",
-  down: "text-[#B5573A]",
-  flat: "text-[#8B8470]",
+  up: "text-[#2DBFAE]",
+  down: "text-[#C13A8A]",
+  flat: "text-[#9A99A6]",
 };
 
 export default function Analytics() {
@@ -36,8 +36,13 @@ export default function Analytics() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-[19px] font-semibold text-[#1F2A1F]">Analytics</h1>
-        <p className="text-[12.5px] text-[#8B8470] mt-0.5">
+        <h1
+          className="text-[21px] font-semibold text-[#111111]"
+          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+        >
+          Analytics
+        </h1>
+        <p className="text-[12.5px] text-[#9A99A6] mt-0.5">
           Efficiency trends across the last 30 days
         </p>
       </div>
@@ -49,13 +54,13 @@ export default function Analytics() {
           return (
             <div
               key={m.label}
-              className="rounded-xl border border-[#E9E5D8] bg-white px-4 py-3.5"
+              className="rounded-xl border border-[#E7E7EC] bg-white px-4 py-3.5"
             >
-              <p className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#8B8470]">
+              <p className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#9A99A6]">
                 {m.label}
               </p>
               <div className="flex items-end justify-between mt-1.5">
-                <span className="text-[20px] font-semibold text-[#1F2A1F]">
+                <span className="text-[20px] font-semibold text-[#111111]">
                   {m.value}
                 </span>
                 <span
@@ -71,24 +76,28 @@ export default function Analytics() {
       </div>
 
       {/* Weekly bar chart */}
-      <div className="rounded-xl border border-[#E9E5D8] bg-white px-5 py-5">
+      <div className="rounded-xl border border-[#E7E7EC] bg-white px-5 py-5">
         <div className="flex items-center justify-between mb-4">
-          <p className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#8B8470]">
+          <p className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#9A99A6]">
             Focus distribution
           </p>
-          <span className="text-[11px] text-[#8B8470] font-mono">Last 7 days</span>
+          <span className="text-[11px] text-[#9A99A6] font-mono">Last 7 days</span>
         </div>
         <div className="flex items-end gap-3 h-40">
           {weeklyFocus.map((d) => (
             <div key={d.day} className="flex-1 flex flex-col items-center gap-2">
               <div className="w-full flex items-end h-32">
                 <div
-                  className="w-full rounded-md bg-gradient-to-t from-[#5C9A35] to-[#8FC15B]"
-                  style={{ height: `${(d.hours / maxHours) * 100}%` }}
+                  className="w-full rounded-md"
+                  style={{
+                    height: `${(d.hours / maxHours) * 100}%`,
+                    backgroundImage:
+                      "linear-gradient(180deg, #2DBFAE 0%, #E8924A 60%, #C13A8A 100%)",
+                  }}
                   title={`${d.hours}h`}
                 />
               </div>
-              <span className="text-[10.5px] text-[#8B8470] font-mono uppercase">
+              <span className="text-[10.5px] text-[#9A99A6] font-mono uppercase">
                 {d.day}
               </span>
             </div>
@@ -97,13 +106,13 @@ export default function Analytics() {
       </div>
 
       {/* Breakdown table */}
-      <div className="rounded-xl border border-[#E9E5D8] bg-white overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-[#E9E5D8]">
-          <p className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#8B8470]">
+      <div className="rounded-xl border border-[#E7E7EC] bg-white overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-[#EEEEF2]">
+          <p className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#9A99A6]">
             Category breakdown
           </p>
         </div>
-        <div className="divide-y divide-[#EFEBDD]">
+        <div className="divide-y divide-[#F1F1F5]">
           {[
             { label: "English", pct: 74 },
             { label: "Communication", pct: 61 },
@@ -112,16 +121,20 @@ export default function Analytics() {
             { label: "Speaking", pct: 58 },
           ].map((row) => (
             <div key={row.label} className="flex items-center gap-4 px-5 py-3">
-              <span className="text-[12px] text-[#5C6B57] w-32 shrink-0">
+              <span className="text-[12px] text-[#5B5B66] w-32 shrink-0">
                 {row.label}
               </span>
-              <div className="flex-1 h-2 rounded-full bg-[#EEEAE0] overflow-hidden">
+              <div className="flex-1 h-2 rounded-full bg-[#EEEEF2] overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-[#6FAE3C]"
-                  style={{ width: `${row.pct}%` }}
+                  className="h-full rounded-full"
+                  style={{
+                    width: `${row.pct}%`,
+                    backgroundImage:
+                      "linear-gradient(90deg, #C13A8A 0%, #E8924A 55%, #2DBFAE 100%)",
+                  }}
                 />
               </div>
-              <span className="text-[11.5px] font-mono text-[#8B8470] w-10 text-right">
+              <span className="text-[11.5px] font-mono text-[#9A99A6] w-10 text-right">
                 {row.pct}%
               </span>
             </div>

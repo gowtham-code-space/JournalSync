@@ -1,0 +1,20 @@
+Commit Message Format Guide
+Format: [type]: short description
+
+Types:
+[feat]: add new feature
+[fix]: fix a bug
+[refactor]: improve code without changing behavior
+[perf]: improve performance
+[style]: formatting changes only
+[docs]: documentation updates
+[test]: add or update tests
+[chore]: maintenance tasks
+[build]: build system changes
+[ci]: CI/CD pipeline changes
+
+Examples:
+[feat][pdf]: implement PDF export for filtered reports
+[fix][db]: resolve foreign key constraint issue for entity_id
+[perf][query]: optimize sales aggregation based on time filters
+[feat][dashboard]: add dynamic time-based grouping for charts
