@@ -8,7 +8,6 @@ import {
   Moon,
   X,
   LogOut,
-  CheckSquare,
   FileText,
 } from "lucide-react";
 import { useThemeStore } from "../../store/useThemeStore";
@@ -38,7 +37,6 @@ export default function Sidebar() {
   const location    = useLocation();
   const isAnalytics = location.pathname === "/analytics";
   const isDashboard = location.pathname === "/dashboard";
-  const isTodo      = location.pathname === "/todo";
   const isNotes     = location.pathname === "/notes";
   const { theme, toggleTheme } = useThemeStore();
   const { isOpen, setOpen }    = useSidebarStore();
@@ -104,12 +102,6 @@ export default function Sidebar() {
             label="Analytics"
             active={isAnalytics}
             onClick={() => handleNavigate("/analytics")}
-          />
-          <SidebarItem
-            icon={CheckSquare}
-            label="Todo List"
-            active={isTodo}
-            onClick={() => handleNavigate("/todo")}
           />
           <SidebarItem
             icon={FileText}

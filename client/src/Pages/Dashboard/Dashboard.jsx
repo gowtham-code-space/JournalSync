@@ -9,7 +9,6 @@ import {
   ChevronRight,
   Menu,
 } from "lucide-react";
-import MilestoneModal    from "../../Components/Modals/MilestoneModal";
 import CalendarModal     from "../../Components/Modals/CalendarModal";
 import ColumnEditorModal from "../../Components/Modals/ColumnEditorModal";
 import CommentModal      from "../../Components/Modals/CommentModal";
@@ -97,7 +96,6 @@ export default function Dashboard() {
     updateField,
   } = useJournal();
 
-  const [milestoneOpen, setMilestoneOpen] = useState(false);
   const [calendarOpen,  setCalendarOpen]  = useState(false);
   const [columnEditor,  setColumnEditor]  = useState({ open: false, column: null });
   const [commentModal,  setCommentModal]  = useState({ open: false, row: null, column: null });
@@ -192,7 +190,7 @@ export default function Dashboard() {
         {/* ── Page body ── */}
         <div className="px-4 sm:px-7 py-5 space-y-5">
 
-          {/* ── Streak + Milestones row ── */}
+          {/* ── Streak row ── */}
           <div className="flex flex-col sm:flex-row gap-4">
 
             {/* Streak card */}
@@ -225,27 +223,6 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Milestones card */}
-            <div className="flex-1 rounded-xl border border-[#E7E7EC] dark:border-[#22222A] bg-white dark:bg-[#16161A] px-5 sm:px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="min-w-0">
-                <p className="text-[10.5px] font-semibold uppercase tracking-[0.1em] text-[#9A99A6] dark:text-[#8E8D9B]">
-                  This month
-                </p>
-                <p className="text-[14px] font-semibold text-[#111111] dark:text-white mt-1">
-                  3 milestones in progress
-                </p>
-                <p className="text-[11.5px] text-[#9A99A6] dark:text-[#8E8D9B] mt-0.5 truncate">
-                  Spanish fluency &middot; Project Alpha &middot; Ideas &amp; backlog
-                </p>
-              </div>
-              <button
-                onClick={() => setMilestoneOpen(true)}
-                className="flex items-center gap-1.5 rounded-lg bg-[#111111] dark:bg-[#FAFAFC] text-white dark:text-[#111111] text-[12.5px] font-semibold px-4 py-2.5 hover:bg-[#2A2A2A] dark:hover:bg-[#E2E2E6] transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start"
-              >
-                Monthly Milestones
-                <ChevronRight size={13} />
-              </button>
-            </div>
           </div>
 
           {/* ── Journal table card ── */}
@@ -451,7 +428,6 @@ export default function Dashboard() {
       </main>
 
       {/* ── Modals ── */}
-      <MilestoneModal open={milestoneOpen} onClose={() => setMilestoneOpen(false)} />
       <CalendarModal
         open={calendarOpen}
         onClose={() => setCalendarOpen(false)}
