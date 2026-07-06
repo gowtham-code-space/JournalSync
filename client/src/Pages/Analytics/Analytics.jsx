@@ -1,14 +1,17 @@
-import React, { useState, useMemo } from "react";
+﻿import React, { useState, useMemo } from "react";
 import { TrendingUp, TrendingDown, Minus, Calendar, BarChart3, Sparkles, Menu } from "lucide-react";
-import CalendarModal    from "../../Components/Modals/CalendarModal";
-import Sidebar          from "../../Components/Sidebar/Sidebar";
-import ColumnStatCard   from "../../Components/Stats/ColumnStatCard";
-import { useJournal }  from "../../Context/JournalContext";
-import { useSidebarStore } from "../../store/useSidebarStore";
+import CalendarModal from "@/components/ui/overlays/CalendarModal";
+import Sidebar from "@/components/layout/Sidebar/Sidebar";
+import ColumnStatCard from "@/components/ui/composites/ColumnStatCard";
+import { useJournal } from "@/contexts/JournalContext";
+import useSidebarStore from "@/hooks/useSidebarStore";
+import { useThemeStore } from '@/hooks/useThemeStore'
+import { getUiTokens } from '@/components/ui/uiTokens'
+import { Button, IconButton } from '@/components/primitives'
 
 // ─── trend helpers ────────────────────────────────────────────────────────────
 
-const trendIcon  = { up: TrendingUp, down: TrendingDown, flat: Minus };
+const trendIcon = { up: TrendingUp, down: TrendingDown, flat: Minus };
 const trendColor = { up: "text-[#2DBFAE]", down: "text-[#C13A8A]", flat: "text-[#9A99A6]" };
 
 // ─── Analytics ───────────────────────────────────────────────────────────────
@@ -26,6 +29,8 @@ export default function Analytics() {
 
   const [calendarOpen, setCalendarOpen] = useState(false);
   const toggleSidebar = useSidebarStore((state) => state.toggle);
+  const theme = useThemeStore((s) => s.theme)
+  const tokens = getUiTokens(theme)
 
   // Only columns flagged for analytics
   const trackedColumns = useMemo(
@@ -95,7 +100,7 @@ export default function Analytics() {
   }, [currentEntries]);
 
   return (
-    <div className="h-screen w-full bg-[#F5F5F7] dark:bg-[#0C0C0E] flex overflow-hidden font-sans text-[#111111] dark:text-[#FAFAFC]">
+    <div className="h-screen w-full flex overflow-hidden font-sans" style={{ backgroundColor: tokens.colors.bg, color: tokens.colors.textPrimary }}>
       {/* ── Shared Sidebar ── */}
       <Sidebar />
 
@@ -105,36 +110,28 @@ export default function Analytics() {
         {/* ── Page header ── */}
         <div className="flex items-start justify-between mb-6">
           <div className="flex items-center gap-3">
-            <button
-              onClick={toggleSidebar}
-              className="md:hidden h-9 w-9 flex items-center justify-center rounded-lg border border-[#E4E4ED] dark:border-[#22222A] bg-white dark:bg-[#16161A] text-[#6B6B76] dark:text-[#A1A1AA] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors shrink-0"
-              aria-label="Toggle sidebar"
-            >
+            <IconButton onClick={toggleSidebar} className="md:hidden" variant="ghost" size="sm" aria-label="Toggle sidebar">
               <Menu size={16} />
-            </button>
+            </IconButton>
             <div>
               <h1
-                className="text-[21px] font-semibold text-[#111111] dark:text-white"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                className="text-[21px] font-semibold"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif", color: tokens.colors.textPrimary }}
               >
                 Analytics
               </h1>
-              <p className="text-[12.5px] text-[#9A99A6] dark:text-[#8E8D9B] mt-0.5 flex items-center gap-1.5">
-                <Sparkles size={11} className="text-[#E8924A]" />
+              <p className="text-[12.5px] mt-0.5 flex items-center gap-1.5" style={{ color: tokens.colors.textMuted }}>
+                <Sparkles size={11} style={{ color: tokens.colors.brand.orange }} />
                 {monthLabel} · {trackedColumns.length} column{trackedColumns.length !== 1 ? "s" : ""} tracked
               </p>
             </div>
           </div>
 
           {/* Month switcher — synced with Dashboard */}
-          <button
-            onClick={() => setCalendarOpen(true)}
-            className="flex items-center gap-1.5 rounded-lg border border-[#E4E4ED] dark:border-[#2C2C35] bg-white dark:bg-[#16161A] px-3 py-1.5 text-[12px] font-medium text-[#6B6B76] dark:text-[#A1A1AA] hover:bg-[#F1F1F5] dark:hover:bg-[#1E1E24] transition-colors"
-            aria-label="Switch month"
-          >
+          <Button onClick={() => setCalendarOpen(true)} variant="ghost" size="sm" aria-label="Switch month">
             <Calendar size={14} />
-            {monthLabel}
-          </button>
+            <span className="ml-1">{monthLabel}</span>
+          </Button>
         </div>
 
         <div className="space-y-6">
@@ -143,19 +140,13 @@ export default function Analytics() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {kpiCards.map((m) => {
               const Icon = trendIcon[m.trend];
+              const trendColorValue = m.trend === 'up' ? tokens.colors.status.success : (m.trend === 'down' ? tokens.colors.status.error : tokens.colors.textMuted)
               return (
-                <div
-                  key={m.label}
-                  className="rounded-xl border border-[#E7E7EC] dark:border-[#22222A] bg-white dark:bg-[#16161A] px-4 py-3.5 hover:shadow-sm transition-shadow"
-                >
-                  <p className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#9A99A6] dark:text-[#8E8D9B]">
-                    {m.label}
-                  </p>
+                <div key={m.label} className="rounded-xl px-4 py-3.5 hover:shadow-sm transition-shadow" style={{ border: `1px solid ${tokens.colors.border}`, backgroundColor: tokens.colors.surface }}>
+                  <p style={{ fontSize: '10.5px', fontWeight: 600, letterSpacing: '0.08em', color: tokens.colors.textMuted, textTransform: 'uppercase' }}>{m.label}</p>
                   <div className="flex items-end justify-between mt-1.5">
-                    <span className="text-[20px] font-semibold text-[#111111] dark:text-white">
-                      {m.value}
-                    </span>
-                    <span className={`flex items-center gap-1 text-[11px] font-mono ${trendColor[m.trend]}`}>
+                    <span style={{ fontSize: 20, fontWeight: 600, color: tokens.colors.textPrimary }}>{m.value}</span>
+                    <span className="flex items-center gap-1" style={{ fontSize: 11, fontFamily: 'monospace', color: trendColorValue }}>
                       <Icon size={11} />
                       {m.delta}
                     </span>
@@ -167,14 +158,14 @@ export default function Analytics() {
 
           {/* ── Per-column stat cards ── */}
           {trackedColumns.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-[#D4D4DE] dark:border-[#2C2C35] bg-white dark:bg-[#16161A] px-8 py-12 text-center">
-              <BarChart3 size={28} className="text-[#D4D4DE] dark:text-[#66667A] mx-auto mb-3" />
-              <p className="text-[13.5px] font-medium text-[#6B6B76] dark:text-[#A1A1AA]">
+            <div className="rounded-xl px-8 py-12 text-center" style={{ border: `1px dashed ${tokens.colors.borderSubtle}`, backgroundColor: tokens.colors.surface }}>
+              <BarChart3 size={28} style={{ color: tokens.colors.borderSubtle }} className="mx-auto mb-3" />
+              <p style={{ fontSize: '13.5px', fontWeight: 500, color: tokens.colors.textMuted }}>
                 No columns are tracked for analytics yet
               </p>
-              <p className="text-[11.5px] text-[#C3C3D1] dark:text-[#71717A] mt-1 max-w-xs mx-auto">
-                Open any column header in the Dashboard, then toggle{" "}
-                <span className="font-semibold text-[#9A99A6] dark:text-[#8E8D9B]">Track for Analytics</span> on.
+              <p style={{ fontSize: '11.5px', color: tokens.colors.textSecondary, marginTop: 4, maxWidth: '22rem', margin: '0.25rem auto 0' }}>
+                Open any column header in the Dashboard, then toggle {" "}
+                <span style={{ fontWeight: 700, color: tokens.colors.textMuted }}>Track for Analytics</span> on.
               </p>
             </div>
           ) : (
