@@ -1,0 +1,131 @@
+/* ============================================================
+   utilities.css — Reusable Utility Classes
+   Small, single-purpose helpers that don't belong to any
+   single component. All values come from CSS variables
+   defined in variables.css.
+   ============================================================ */
+
+/* ── Layout helpers ──────────────────────────────────────── */
+.flex-center   { display: flex; align-items: center; justify-content: center; }
+.flex-between  { display: flex; align-items: center; justify-content: space-between; }
+.flex-start    { display: flex; align-items: center; justify-content: flex-start; }
+.flex-end      { display: flex; align-items: center; justify-content: flex-end; }
+.flex-col      { display: flex; flex-direction: column; }
+.flex-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Surface helpers ─────────────────────────────────────── */
+.surface        { background-color: var(--color-surface); }
+.surface-subtle { background-color: var(--color-surface-subtle); }
+.surface-page   { background-color: var(--color-bg); }
+
+/* ── Border helpers ──────────────────────────────────────── */
+.border-default { border: 1px solid var(--color-border); }
+.border-subtle  { border: 1px solid var(--color-border-subtle); }
+.border-top     { border-top: 1px solid var(--color-border); }
+.border-bottom  { border-bottom: 1px solid var(--color-border); }
+
+/* ── Card surface pattern ────────────────────────────────── */
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+}
+
+/* ── Focus ring ──────────────────────────────────────────── */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-brand-teal);
+  outline-offset: 2px;
+}
+
+/* ── Truncate text ───────────────────────────────────────── */
+.truncate-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.truncate-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* ── Divider ─────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: var(--space-xl) 0;
+}
+
+.divider-subtle {
+  height: 1px;
+  background-color: var(--color-border-subtle);
+}
+
+/* ── Transition helpers ──────────────────────────────────── */
+.transition-colors {
+  transition-property: color, background-color, border-color;
+  transition-duration: var(--duration-normal);
+  transition-timing-function: var(--ease-in-out);
+}
+
+.transition-all {
+  transition: all var(--duration-normal) var(--ease-in-out);
+}
+
+.transition-transform {
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+/* ── Opacity helpers ─────────────────────────────────────── */
+.opacity-disabled { opacity: 0.5; pointer-events: none; }
+.opacity-muted    { opacity: 0.6; }
+
+/* ── Visually hidden (for screen readers) ────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Status dot ──────────────────────────────────────────── */
+.status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+}
+
+.status-dot-success { background-color: var(--color-status-success); }
+.status-dot-error   { background-color: var(--color-status-error); }
+.status-dot-warning { background-color: var(--color-status-warning); }
+
+/* ── Avatar gradient (matches sidebar user card) ─────────── */
+.avatar-gradient {
+  background-image: linear-gradient(
+    135deg,
+    var(--color-brand-pink)   0%,
+    var(--color-brand-orange) 55%,
+    var(--color-brand-teal)   100%
+  );
+}

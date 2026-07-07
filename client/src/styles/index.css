@@ -1,0 +1,14 @@
+/* ============================================================
+   index.css — Style Barrel
+   Single import point for all project stylesheets.
+   Import this file (or globals.css which re-exports it) in
+   any entry point that needs the full style stack.
+   ============================================================ */
+
+@import './variables.css';
+@import './reset.css';
+@import './typography.css';
+@import './scrollbar.css';
+@import './animations.css';
+@import './skeleton.css';
+@import './utilities.css';

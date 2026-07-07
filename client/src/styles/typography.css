@@ -1,0 +1,116 @@
+/* ============================================================
+   typography.css — Semantic Typography Utilities
+   Named classes that map directly to typography tokens in
+   src/theme/typography.js. Use these classes instead of
+   raw Tailwind text-* utilities so all type scales are
+   driven from the single JS token source.
+   ============================================================ */
+
+/* ── Font families ───────────────────────────────────────── */
+.font-serif { font-family: var(--font-serif); }
+.font-sans  { font-family: var(--font-sans);  }
+.font-mono  { font-family: var(--font-mono);  }
+
+/* ── Semantic heading roles ──────────────────────────────── */
+
+/* Page hero title — Playfair Display 32px/700 */
+.type-heading-xl {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Section heading — Playfair Display 21px/600 */
+.type-heading-lg {
+  font-family: var(--font-serif);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Sub-section heading — Playfair Display 19px/600 */
+.type-heading-md {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Card title — Playfair Display 17px/600 */
+.type-heading-sm {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ── Semantic body roles ─────────────────────────────────── */
+
+/* Large body / primary descriptions */
+.type-body-lg {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Default body */
+.type-body-md {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Small body / secondary content */
+.type-body-sm {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* ── Utility roles ───────────────────────────────────────── */
+
+/* Captions, footnotes */
+.type-caption {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* All-caps column labels, stat labels */
+.type-label {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Button text */
+.type-button {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Monospace / code */
+.type-code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* ── Text colour utilities (token-aware) ─────────────────── */
+.text-primary   { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted     { color: var(--color-text-muted); }
+.text-brand     { color: var(--color-brand-teal); }
+.text-danger    { color: var(--color-brand-pink); }
+.text-warning   { color: var(--color-brand-orange); }

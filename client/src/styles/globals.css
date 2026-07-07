@@ -1,0 +1,14 @@
+/* ============================================================
+   globals.css — Application Entry Stylesheet
+   Imported by src/app/main.jsx.
+   All @import rules must appear before other statements.
+   ============================================================ */
+
+/* Google Fonts — must be first */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap");
+
+/* Tailwind CSS v4 */
+@import "tailwindcss";
+
+/* Project styles barrel */
+@import './index.css';

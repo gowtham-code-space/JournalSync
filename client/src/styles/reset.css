@@ -1,0 +1,60 @@
+/* ============================================================
+   reset.css — Minimal CSS Reset
+   Only what is needed on top of Tailwind's preflight to
+   establish consistent base rendering.
+   ============================================================ */
+
+/* Prevent layout shifts from scrollbar appearing */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Inherit font family everywhere */
+*,
+*::before,
+*::after {
+  font-family: inherit;
+}
+
+/* Remove default button styles so primitives start clean */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Remove list styles — nav lists should not have bullets */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Prevent images from overflowing their containers */
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Remove default fieldset/legend styling */
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove number input spinners */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* Remove search input cancel button */
+input[type='search']::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}

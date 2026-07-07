@@ -1,0 +1,107 @@
+/* ============================================================
+   animations.css — Keyframe Animations
+   All @keyframes for the project. Values mirror the token
+   definitions in src/theme/animations.js so CSS and JS
+   animations stay in sync.
+   ============================================================ */
+
+/* ── Spin ────────────────────────────────────────────────── */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Ping (ripple / attention pulse) ─────────────────────── */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* ── Pulse (opacity fade — used by skeletons) ────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+/* ── Bounce ──────────────────────────────────────────────── */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-20%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+/* ── Fade in ─────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Fade in up (modal / card entrance) ──────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Fade in down (dropdown entrance) ───────────────────── */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Scale in (popover / tooltip entrance) ───────────────── */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── Slide in from left (sidebar) ────────────────────────── */
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
+/* ── Shimmer (skeleton loading bar) ─────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+/* ── Toast progress bar ──────────────────────────────────── */
+@keyframes toastProgress {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+/* ── Utility animation classes ───────────────────────────── */
+.animate-spin    { animation: spin    1s linear infinite; }
+.animate-ping    { animation: ping    1s cubic-bezier(0, 0, 0.2, 1) infinite; }
+.animate-pulse   { animation: pulse   2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.animate-bounce  { animation: bounce  1s infinite; }
+.animate-fade-in { animation: fadeIn  var(--duration-normal) var(--ease-out) both; }
+.animate-fade-up { animation: fadeInUp var(--duration-slow) var(--ease-out) both; }
+.animate-scale   { animation: scaleIn var(--duration-normal) var(--ease-out) both; }

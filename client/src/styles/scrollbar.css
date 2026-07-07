@@ -1,0 +1,63 @@
+/* ============================================================
+   scrollbar.css — Custom Scrollbar Styles
+   Thin, theme-aware scrollbars for all scrollable surfaces.
+   Automatically adapts to light/dark mode via CSS variables.
+   ============================================================ */
+
+/* ── Webkit (Chrome, Safari, Edge) ──────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-full);
+  transition: background-color var(--duration-normal) var(--ease-in-out);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.28);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ── Dark mode overrides ────────────────────────────────── */
+.dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.22);
+}
+
+/* ── Scrollable containers (apply .scroll-thin to an element) */
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+.dark .scroll-thin {
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+
+/* ── Hidden scrollbar (scrollable but invisible) ─────────── */
+.scroll-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Overlay scrollbar (doesn't affect layout width) ─────── */
+.scroll-overlay {
+  overflow: overlay;
+}
