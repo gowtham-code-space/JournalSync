@@ -1,0 +1,10 @@
+// Feedback barrel — single import point for all feedback components.
+export { default as Toast, ToastProvider, useToast } from './Toast'
+export { default as CardSkeleton }      from './CardSkeleton'
+export { default as ChartSkeleton }     from './ChartSkeleton'
+export { default as DashboardSkeleton } from './DashboardSkeleton'
+export { default as DetailSkeleton }    from './DetailSkeleton'
+export { default as FormSkeleton }      from './FormSkeleton'
+export { default as ListSkeleton }      from './ListSkeleton'
+export { default as ProfileSkeleton }   from './ProfileSkeleton'
+export { default as TableSkeleton }     from './TableSkeleton'
