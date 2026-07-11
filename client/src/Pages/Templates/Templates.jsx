@@ -3,7 +3,7 @@ import {
   Search, Plus, Sparkles, BookOpen, FlaskConical, GitPullRequest,
   Trophy, MessageSquare, Code2, Bug, Rocket, TrendingUp, Target,
   Compass, FileText, Star, LayoutGrid, CheckCircle2,
-} from 'lucide-react'
+} from '@/theme/icons'
 
 import { useThemeStore } from '@/hooks/useThemeStore'
 import { getUiTokens } from '@/components/ui/uiTokens'

@@ -1,4 +1,4 @@
-import { FileSearch } from 'lucide-react'
+import { FileSearch } from '@/theme/icons'
 import { useThemeStore } from '@/hooks/useThemeStore'
 import { getUiTokens } from '@/components/ui/uiTokens'
 import { Button } from '@/components/primitives'

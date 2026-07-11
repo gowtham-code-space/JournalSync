@@ -1,30 +1,39 @@
-﻿import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutGrid,
+  Layout,
   BarChart3,
+  ActivitySquare,
   ChevronRight,
   Sun,
   Moon,
   X,
   LogOut,
   FileText,
-} from "lucide-react";
+} from "@/theme/icons";
 import { useThemeStore } from "@/hooks/useThemeStore";
 import { useSidebarStore } from "@/hooks/useSidebarStore";
 import { Button, IconButton } from "@/components/primitives";
 import { getUiTokens } from '@/components/ui/uiTokens'
 
 function SidebarItem({ icon: Icon, label, active, onClick }) {
+  const theme = useThemeStore((s) => s.theme);
+  const tokens = getUiTokens(theme);
+
   return (
     <Button
       onClick={onClick}
-      variant={active ? "navActive" : "navInactive"}
+      variant="nav"
+      active={active}
       className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-200"
     >
       <Icon size={16} strokeWidth={2} />
       {label}
       {active && (
-        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[#2DBFAE] shrink-0" />
+        <span
+          style={{ backgroundColor: tokens.colors.brand.teal }}
+          className="ml-auto h-1.5 w-1.5 rounded-full shrink-0"
+        />
       )}
     </Button>
   );
@@ -35,7 +44,9 @@ export default function Sidebar() {
   const location    = useLocation();
   const isAnalytics = location.pathname === "/analytics";
   const isDashboard = location.pathname === "/dashboard";
+  const isTemplates = location.pathname === "/templates";
   const isNotes     = location.pathname === "/notes";
+  const isStats     = location.pathname === "/stats";
   const { theme, toggleTheme } = useThemeStore();
   const { isOpen, setOpen }    = useSidebarStore();
   const tokens = getUiTokens(theme)
@@ -63,18 +74,26 @@ export default function Sidebar() {
         className={`fixed inset-y-0 left-0 z-40 w-60 shrink-0 flex flex-col px-4 py-5 transition-transform duration-300 ease-in-out md:static md:translate-x-0 ${
           isOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"
         }`}
-        style={{ borderRight: `1px solid ${tokens.colors.border}`, backgroundColor: tokens.colors.surface }}
+        style={{ borderRight: `1px solid ${tokens.colors.border}`, backgroundColor: tokens.colors.surface, overflow: 'hidden' }}
       >
 
         <div className="px-1 flex items-center justify-between mb-7">
           <div>
             <h1
-              className="text-[20px] font-semibold text-[#111111] dark:text-white tracking-tight"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="tracking-tight"
+              style={{
+                fontFamily: tokens.typography.fonts.serif,
+                fontSize: tokens.typography.fontSizes.xxl,
+                fontWeight: tokens.typography.fontWeights.semibold,
+                color: tokens.colors.textPrimary,
+              }}
             >
               GrowthOS
             </h1>
-            <p className="text-[10.5px] text-[#9A99A6] dark:text-[#8E8D9B] mt-0.5">
+            <p
+              style={tokens.typography.label}
+              className="mt-0.5"
+            >
               Efficiency infrastructure
             </p>
           </div>
@@ -98,10 +117,16 @@ export default function Sidebar() {
             onClick={() => handleNavigate("/dashboard")}
           />
           <SidebarItem
-            icon={BarChart3}
-            label="Analytics"
-            active={isAnalytics}
-            onClick={() => handleNavigate("/analytics")}
+            icon={ActivitySquare}
+            label="Stats"
+            active={isStats}
+            onClick={() => handleNavigate("/stats")}
+          />
+          <SidebarItem
+            icon={Layout}
+            label="Templates"
+            active={isTemplates}
+            onClick={() => handleNavigate("/templates")}
           />
           <SidebarItem
             icon={FileText}
@@ -116,7 +141,7 @@ export default function Sidebar() {
 
           {/* Theme toggle */}
           <Button
-            variant="ghost"
+            variant="nav"
             onClick={toggleTheme}
             className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors"
           >

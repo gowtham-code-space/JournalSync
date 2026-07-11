@@ -1,4 +1,4 @@
-import { X } from 'lucide-react'
+import { X } from '@/theme/icons'
 
 export default function ModalShell({ open, title, subtitle, onClose, children, footer }) {
   if (!open) return null

@@ -7,9 +7,14 @@ export const navigation = {
       icon: "LayoutGrid",
     },
     {
-      label: "Analytics",
-      path: "/analytics",
+      label: "Stats",
+      path: "/stats",
       icon: "BarChart3",
+    },
+    {
+      label: "Templates",
+      path: "/templates",
+      icon: "Layout",
     },
     {
       label: "Notes",

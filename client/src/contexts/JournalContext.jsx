@@ -82,6 +82,19 @@ export function JournalProvider({ children }) {
   // Entries keyed by month
   const [entriesByMonth, setEntriesByMonth]   = useState(INITIAL_ENTRIES);
 
+  const [activeTemplate, setActiveTemplateState] = useState(() => {
+    return localStorage.getItem("active-template") || null;
+  });
+
+  const setActiveTemplate = (template) => {
+    setActiveTemplateState(template);
+    if (template) {
+      localStorage.setItem("active-template", template);
+    } else {
+      localStorage.removeItem("active-template");
+    }
+  };
+
   // ── derived ────────────────────────────────────────────────────────────────
   const activeMonthKey   = monthKey(selectedMonth, selectedYear);
   const monthLabel       = `${MONTH_NAMES[selectedMonth]} ${selectedYear}`;
@@ -186,6 +199,9 @@ export function JournalProvider({ children }) {
         currentEntries,
         updateCell,
         updateField,
+        // template state
+        activeTemplate,
+        setActiveTemplate,
       }}
     >
       {children}

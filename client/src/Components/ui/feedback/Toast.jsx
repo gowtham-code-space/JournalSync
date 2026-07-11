@@ -15,7 +15,7 @@ import {
   Info,
   Flame,
   X,
-} from "lucide-react";
+} from "@/theme/icons";
 import { useThemeStore } from "@/hooks/useThemeStore";
 import { getUiTokens } from "@/components/ui/uiTokens";
 import { Button, IconButton } from "@/components/primitives";

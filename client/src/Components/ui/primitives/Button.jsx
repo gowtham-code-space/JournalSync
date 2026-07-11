@@ -30,8 +30,8 @@ const styleByVariant = {
   link: (tokens) => ({ color: tokens.colors.brand.teal }),
   text: (tokens) => ({ color: tokens.colors.textSecondary }),
   nav: (tokens, active) => ({
-    backgroundColor: active ? tokens.colors.textPrimary : 'transparent',
-    color: active ? '#FFFFFF' : tokens.colors.textSecondary,
+    backgroundColor: active ? tokens.colors.borderSubtle : 'transparent',
+    color: active ? tokens.colors.textPrimary : tokens.colors.textSecondary,
   }),
 }
 
@@ -48,7 +48,7 @@ const Button = forwardRef(function Button(
       ref={ref}
       type={type}
       className={[
-        'inline-flex items-center justify-center gap-2 rounded-lg border border-transparent font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50',
+        `inline-flex items-center ${variant === 'nav' ? 'justify-start' : 'justify-center'} gap-2 rounded-lg border border-transparent font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50`,
         variantClasses[variant] ?? variantClasses.primary,
         sizeClasses[size] ?? sizeClasses.md,
         className,

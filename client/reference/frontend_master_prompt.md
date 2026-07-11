@@ -782,10 +782,93 @@ Always use `size` (number) and `strokeWidth` (number) props. Default stroke is `
 
 ---
 
+## 10.1 CSS Style System (`src/styles/`)
+
+All stylesheets live in `src/styles/`. They are imported via a barrel:
+
+```
+globals.css   ← entry point, imported by main.jsx
+  └─ index.css  ← barrel that @imports all below
+       ├─ variables.css   CSS custom properties mirroring all JS tokens
+       ├─ reset.css       Minimal reset on top of Tailwind preflight
+       ├─ typography.css  Semantic .type-* classes
+       ├─ scrollbar.css   Theme-aware scrollbar styles + .scroll-thin/.scroll-hidden
+       ├─ animations.css  @keyframes + .animate-* utility classes
+       ├─ skeleton.css    .skeleton shimmer base + shape/width helpers
+       └─ utilities.css   Layout, surface, border, card, transition helpers
+```
+
+#### CSS Custom Properties (`variables.css`)
+
+Every JS design token is also available as a CSS variable for component `.css` files:
+
+```css
+--color-brand-teal        --color-bg          --color-surface
+--color-text-primary      --color-border      --color-border-subtle
+--space-md                --space-xl          --space-xxl
+--radius-lg               --radius-xl         --radius-card
+--shadow-sm               --shadow-md         --shadow-xxl
+--font-serif              --font-sans         --font-mono
+--z-modal                 --z-toast           --z-drawer
+--duration-normal         --ease-in-out
+```
+
+Dark mode overrides are under `.dark {}`. Never define new raw hex values in a CSS file — map to these variables.
+
+#### Skeleton CSS Classes (`skeleton.css`)
+
+| Class | Purpose |
+|-------|---------|
+| `.skeleton` | Base shimmer element — apply to any placeholder div |
+| `.skeleton-text` | 12px-high text line |
+| `.skeleton-text-sm` | 10px-high text line |
+| `.skeleton-heading` | 20px-high heading placeholder |
+| `.skeleton-circle` | Circular avatar placeholder |
+| `.skeleton-card` | Card-shaped placeholder |
+| `.skeleton-button` | 36px button placeholder |
+| `.skeleton-w-full/3/4/2/3/1/2/1/3/1/4` | Width helpers |
+| `.skeleton-delay-1/2/3/4` | Animation stagger delays |
+
+#### Typography Classes (`typography.css`)
+
+| Class | Maps to |
+|-------|---------|
+| `.type-heading-xl` | Playfair 32px/700 |
+| `.type-heading-lg` | Playfair 21px/600 |
+| `.type-heading-md` | Playfair 19px/600 |
+| `.type-heading-sm` | Playfair 17px/600 |
+| `.type-body-lg` | Sans 15px/400 |
+| `.type-body-md` | Sans 13px/400 |
+| `.type-body-sm` | Sans 12px/400 |
+| `.type-caption` | Sans 11px/400 |
+| `.type-label` | Sans 10.5px/500 uppercase tracking |
+| `.type-button` | Sans 13px/500 |
+
+#### Utility Classes (`utilities.css`)
+
+```css
+.flex-center / .flex-between / .flex-start / .flex-end / .flex-col
+.surface / .surface-subtle / .surface-page
+.border-default / .border-subtle / .border-top / .border-bottom
+.card        /* surface + border + radius-card + shadow-sm */
+.panel       /* surface + border + radius-panel */
+.focus-ring  /* brand-teal outline on :focus-visible */
+.truncate-1 / .truncate-2
+.divider / .divider-subtle
+.transition-colors / .transition-all / .transition-transform
+.opacity-disabled / .opacity-muted
+.sr-only
+.status-dot / .status-dot-success / .status-dot-error / .status-dot-warning
+.avatar-gradient  /* pink→orange→teal gradient (matches sidebar user card) */
+```
+
+---
+
 ## 11. How to Build a New Component — Checklist
 
 - [ ] Does a similar component already exist? Check `composites/`, `feedback/`, `overlays/`, `primitives/` first.
 - [ ] Import `getUiTokens` and `useThemeStore` — resolve all visual values from `tokens`.
+- [ ] **If passing tokens to child components declared in the same file — always pass `tokens={tokens}` as a prop.** Never let a sub-component call `getUiTokens` independently if the parent already has it.
 - [ ] Use `Button` or `IconButton` for any clickable element.
 - [ ] Use `ModalShell` if the component is a dialog.
 - [ ] Use `useToast()` for user feedback.
@@ -796,49 +879,175 @@ Always use `size` (number) and `strokeWidth` (number) props. Default stroke is `
 
 ---
 
-## 12. Quick Reference — Import Cheatsheet
+## 12. Feedback (Skeleton) Components — Full Reference
+
+All skeletons are in `src/Components/ui/feedback/`. Import via barrel:
 
 ```js
-// Primitives
+import { CardSkeleton, ChartSkeleton, TableSkeleton, ListSkeleton,
+         FormSkeleton, ProfileSkeleton, DetailSkeleton,
+         DashboardSkeleton } from '@/components/feedback'
+```
+
+| Component | Use For | Key Props |
+|-----------|---------|----------|
+| `CardSkeleton` | Any stat/metric card loading state | `className` |
+| `ChartSkeleton` | Any chart (bar/line/area) loading state | `height`, `className` |
+| `TableSkeleton` | Data grid / journal table loading | `rows` (default 6), `cols` (default 5) |
+| `ListSkeleton` | Vertical lists — notes, tasks, search results | `items` (default 5) |
+| `FormSkeleton` | Form loading state — settings, edit panels | `fields` (default 4) |
+| `ProfileSkeleton` | User profile / author card | `className` |
+| `DetailSkeleton` | Single-item detail view | `className` |
+| `DashboardSkeleton` | Full Dashboard page loading state | *(none)* |
+| `Toast` / `useToast` / `ToastProvider` | Notification toasts | See §4.3 |
+
+All skeleton components:
+- Call `getUiTokens(theme)` internally — they are automatically theme-aware.
+- Use `.skeleton` CSS class from `src/styles/skeleton.css` for the shimmer effect.
+- Render with `aria-hidden="true"` — they are decorative placeholders.
+
+---
+
+## 13. Composite Stat Components — Full Reference
+
+All composites are in `src/Components/ui/composites/`. Import via barrel:
+
+```js
+import { ColumnStatCard, StatBarChart, StatLineChart, StatAreaChart,
+         StatPieChart, StatPercentageRing, StatHeatmap,
+         SpiderChart } from '@/components/composites'
+// or by alias:
+import { StatBarChart } from '@/components/Stats'
+```
+
+| Component | Chart Type | Best For | Key Props |
+|-----------|-----------|----------|-----------|
+| `ColumnStatCard` | Spark bars | Any numeric/box column summary | `column`, `entries`, `monthLabel` |
+| `StatBarChart` | Vertical bars | Numeric columns over time | `column`, `entries`, `monthLabel`, `height` |
+| `StatLineChart` | SVG polyline | Continuous numeric data | `column`, `entries`, `monthLabel`, `height` |
+| `StatAreaChart` | Gradient area | Smooth numeric trends | `column`, `entries`, `monthLabel`, `height`, `color` |
+| `StatPieChart` | SVG donut | Boolean (box) active/inactive proportion | `column`, `entries`, `monthLabel`, `size` |
+| `StatPercentageRing` | Circular ring | Single percentage / goal progress | `label`, `value`, `size`, `color`, `subtitle` |
+| `StatHeatmap` | Calendar grid | Day-by-day activity heatmap | `column`, `entries`, `monthLabel`, `year`, `month` |
+| `SpiderChart` | Radar / spider | Multi-column normalised averages side-by-side | `columns`, `entries`, `monthLabel`, `size`, `color` |
+
+**Data contract — `column` prop:**
+```js
+{ id: 'sleep', label: 'Sleep', type: 'number' | 'box' }
+```
+
+**Data contract — `entries` prop:**
+```js
+Array of journal entry objects from useJournal().currentEntries
+// Each entry: { id, day, comment, cells: {}, rating, deepWork, sleep }
+```
+
+All composites call `getUiTokens(theme)` internally. Never pass raw colours to them.
+
+---
+
+## 14. Common Patterns & Pitfalls
+
+### ✅ Tokens in child components declared in the same file
+
+When a file exports a default page/component AND defines private sub-components below it, the sub-components do **not** automatically have access to `tokens`. You must pass `tokens` as a prop.
+
+```jsx
+// ✅ CORRECT — parent passes tokens down
+export default function MyPage() {
+  const theme  = useThemeStore((s) => s.theme)
+  const tokens = getUiTokens(theme)
+  return <MyItem tokens={tokens} />
+}
+
+function MyItem({ tokens, label }) {
+  return <p style={{ color: tokens.colors.textPrimary }}>{label}</p>
+}
+
+// ❌ WRONG — tokens is undefined; crashes with "Cannot read properties of undefined"
+function MyItem({ label }) {
+  const tokens = getUiTokens()   // theme is missing → returns undefined
+  return <p style={{ color: tokens.colors.textPrimary }}>{label}</p>
+}
+```
+
+### ✅ Using the Token Bridge Correctly
+
+```js
+// Always:
+const theme  = useThemeStore((s) => s.theme)  // "light" | "dark"
+const tokens = getUiTokens(theme)             // resolved token object
+
+// tokens.colors.surface    ← not tokens.colors.light.surface
+// tokens.colors.border     ← not colors.light.border
+// tokens.colors.brand.teal ← not "#2DBFAE"
+// tokens.colors.status.success, tokens.colors.tags.work …
+```
+
+### ✅ CSS @import Order
+
+In any `.css` file that uses `@import`, all imports **must appear before all other statements**.
+
+```css
+/* ✅ Correct order */
+@import url("https://fonts.googleapis.com/...");
+@import "tailwindcss";
+@import './index.css';
+/* ... rest of CSS ... */
+```
+
+---
+
+## 15. Quick Reference — Import Cheatsheet
+
+```js
+// ── UI Primitives ────────────────────────────────────────────
 import { Button, IconButton } from '@/components/primitives'
 
-// Overlays
-import ModalShell from '@/components/overlays/ModalShell'
-import { CalendarModal }      from '@/components/overlays'
-import { ColumnEditorModal }  from '@/components/overlays'
-import { CommentModal }       from '@/components/overlays'
-import { NewNoteModal }       from '@/components/overlays'
-import { NewTaskModal }       from '@/components/overlays'
+// ── Overlays / Modals ────────────────────────────────────────
+import { ModalShell, CalendarModal, ColumnEditorModal,
+         CommentModal, NewNoteModal, NewTaskModal } from '@/components/overlays'
 
-// Feedback
-import { ToastProvider, useToast } from '@/components/feedback/Toast'
+// ── Feedback / Skeletons ─────────────────────────────────────
+import { ToastProvider, useToast,
+         CardSkeleton, ChartSkeleton, TableSkeleton,
+         ListSkeleton, FormSkeleton, ProfileSkeleton,
+         DetailSkeleton, DashboardSkeleton } from '@/components/feedback'
 
-// Composites
-import ColumnStatCard from '@/components/composites/ColumnStatCard'
+// ── Composite Charts & Cards ─────────────────────────────────
+import { ColumnStatCard, StatBarChart, StatLineChart, StatAreaChart,
+         StatPieChart, StatPercentageRing,
+         StatHeatmap, SpiderChart } from '@/components/composites'
 
-// Tokens
+// ── Token Bridge (use in every component) ────────────────────
 import { getUiTokens } from '@/components/ui/uiTokens'
+
+// ── Raw Design Tokens (rarely needed directly) ───────────────
 import { colors, typography, spacing, radius, shadows,
          zIndex, breakpoints, animations, transitions,
          opacity, elevation, semanticTokens } from '@/theme'
 
-// Hooks / Stores
+// ── Zustand Stores ───────────────────────────────────────────
 import { useThemeStore }   from '@/hooks/useThemeStore'
 import { useSidebarStore } from '@/hooks/useSidebarStore'
-import { useAuth }         from '@/hooks/useAuth'
 
-// Contexts
-import { useJournal }  from '@/contexts/JournalContext'
-import { useTheme }    from '@/contexts/ThemeContext'
-import { AuthProvider } from '@/contexts/AuthContext'
+// ── Auth Hook ────────────────────────────────────────────────
+import { useAuth } from '@/hooks/useAuth'
 
-// Config
-import { appConfig }   from '@/config/appConfig'
-import { navigation }  from '@/config/navigation'
-import { constants }   from '@/config/constants'
+// ── Feature Contexts ─────────────────────────────────────────
+import { useJournal, JournalProvider,
+         MONTH_NAMES, MONTH_ABBR, DEFAULT_COLUMNS,
+         generateMonthEntries, monthKey } from '@/contexts/JournalContext'
+import { AuthProvider, useAuth } from '@/contexts/AuthContext'
+import { useTheme }              from '@/contexts/ThemeContext'
 
-// API
-import { apiClient }   from '@/services/core/apiClient'
+// ── Configuration ────────────────────────────────────────────
+import { appConfig }  from '@/config/appConfig'
+import { navigation } from '@/config/navigation'
+import { constants }  from '@/config/constants'
+
+// ── API Layer ────────────────────────────────────────────────
+import { apiClient } from '@/services/core/apiClient'
 ```
 
 ---

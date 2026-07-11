@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronDown, ChevronRight, ChevronLeft, GripVertical } from 'lucide-react'
+import { ChevronDown, ChevronRight, ChevronLeft, GripVertical } from '@/theme/icons'
 import { useThemeStore } from '@/hooks/useThemeStore'
 import { getUiTokens } from '@/components/ui/uiTokens'
 import { useJournal } from '@/contexts/JournalContext'

@@ -1,6 +1,6 @@
-﻿import { useState } from 'react'
-import { AlignCenter, AlignLeft, AlignRight, Bold, Briefcase, CheckSquare, Clock, Code, FileText, Folder, Italic, Link, List, ListOrdered, Menu, MoreHorizontal, Plus, Search, Share, Strikethrough, Underline, User, Lightbulb, FlaskConical } from 'lucide-react'
-import Sidebar from '@/components/layout/Sidebar/Sidebar'
+import { useState } from 'react'
+import { AlignCenter, AlignLeft, AlignRight, Bold, Briefcase, CheckSquare, Clock, Code, FileText, Folder, Italic, Link, List, ListOrdered, Menu, MoreHorizontal, Plus, Search, Share, Strikethrough, Underline, User, Lightbulb, FlaskConical } from '@/theme/icons'
+
 import NewNoteModal from '@/components/ui/overlays/NewNoteModal'
 import { useSidebarStore } from '@/hooks/useSidebarStore'
 import { useThemeStore } from '@/hooks/useThemeStore'
@@ -16,8 +16,7 @@ export default function Notes() {
   const tokens = getUiTokens(theme)
 
   return (
-    <div className="flex h-screen w-full overflow-hidden font-sans" style={{ backgroundColor: tokens.colors.bg, color: tokens.colors.textPrimary }}>
-      <Sidebar />
+    <>
       <aside className="flex w-72 shrink-0 flex-col" style={{ borderRight: `1px solid ${tokens.colors.border}`, backgroundColor: tokens.colors.surface }}>
         <div className="flex items-center justify-between p-4" style={{ borderBottom: `1px solid ${tokens.colors.border}` }}>
           <div className="flex items-center gap-3">
@@ -43,19 +42,19 @@ export default function Notes() {
           <div className="border-b border-[#E7E7EC] p-4 dark:border-[#22222A]">
             <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#9A99A6] dark:text-[#8E8D9B]">Categories</p>
             <div className="space-y-1">
-              <CategoryItem icon={Folder} label="All Notes" count={14} active={activeCategory === 'All Notes'} onClick={() => setActiveCategory('All Notes')} />
-              <CategoryItem icon={Briefcase} label="Work" count={6} active={activeCategory === 'Work'} onClick={() => setActiveCategory('Work')} />
-              <CategoryItem icon={User} label="Personal" count={4} active={activeCategory === 'Personal'} onClick={() => setActiveCategory('Personal')} />
-              <CategoryItem icon={Lightbulb} label="Ideas" count={3} active={activeCategory === 'Ideas'} onClick={() => setActiveCategory('Ideas')} />
-              <CategoryItem icon={FlaskConical} label="Research" count={1} active={activeCategory === 'Research'} onClick={() => setActiveCategory('Research')} />
+              <CategoryItem tokens={tokens} icon={Folder} label="All Notes" count={14} active={activeCategory === 'All Notes'} onClick={() => setActiveCategory('All Notes')} />
+              <CategoryItem tokens={tokens} icon={Briefcase} label="Work" count={6} active={activeCategory === 'Work'} onClick={() => setActiveCategory('Work')} />
+              <CategoryItem tokens={tokens} icon={User} label="Personal" count={4} active={activeCategory === 'Personal'} onClick={() => setActiveCategory('Personal')} />
+              <CategoryItem tokens={tokens} icon={Lightbulb} label="Ideas" count={3} active={activeCategory === 'Ideas'} onClick={() => setActiveCategory('Ideas')} />
+              <CategoryItem tokens={tokens} icon={FlaskConical} label="Research" count={1} active={activeCategory === 'Research'} onClick={() => setActiveCategory('Research')} />
             </div>
           </div>
 
           <div className="space-y-1 p-3">
-            <NoteListItem active={activeNote === 0} onClick={() => setActiveNote(0)} title="Project Alpha - Milestone Notes" summary="Key decisions from the kickoff meetin..." tag="Work" time="Today, 2:14 PM" />
-            <NoteListItem active={activeNote === 1} onClick={() => setActiveNote(1)} title="Product Roadmap Ideas" summary="Feature brainstorm: AI summarize, cu..." tag="Ideas" time="Yesterday" />
-            <NoteListItem active={activeNote === 2} onClick={() => setActiveNote(2)} title="Spanish Learning Resources" summary="Vocabulary list, conjugation tables an..." tag="Personal" time="Dec 11" />
-            <NoteListItem active={activeNote === 3} onClick={() => setActiveNote(3)} title="Analytics Dashboard Review" summary="Observations from the weekly data re..." tag="Work" time="Dec 10" />
+            <NoteListItem tokens={tokens} active={activeNote === 0} onClick={() => setActiveNote(0)} title="Project Alpha - Milestone Notes" summary="Key decisions from the kickoff meetin..." tag="Work" time="Today, 2:14 PM" />
+            <NoteListItem tokens={tokens} active={activeNote === 1} onClick={() => setActiveNote(1)} title="Product Roadmap Ideas" summary="Feature brainstorm: AI summarize, cu..." tag="Ideas" time="Yesterday" />
+            <NoteListItem tokens={tokens} active={activeNote === 2} onClick={() => setActiveNote(2)} title="Spanish Learning Resources" summary="Vocabulary list, conjugation tables an..." tag="Personal" time="Dec 11" />
+            <NoteListItem tokens={tokens} active={activeNote === 3} onClick={() => setActiveNote(3)} title="Analytics Dashboard Review" summary="Observations from the weekly data re..." tag="Work" time="Dec 10" />
           </div>
         </div>
       </aside>
@@ -78,16 +77,125 @@ export default function Notes() {
 
         <div className="mx-auto w-full max-w-4xl overflow-y-auto px-8 py-10">
           <div className="mb-8">
-            <h1 className="mb-4 text-[32px] font-bold text-[#111111] dark:text-white">Project Alpha – Milestone Notes</h1>
-            <div className="flex flex-wrap items-center gap-4 text-[12px] text-[#9A99A6] dark:text-[#8E8D9B]"><div className="flex items-center gap-2"><span className="flex items-center gap-1 rounded-md bg-[#4B4453] px-2 py-0.5 font-medium text-[#A69FC1]"><Briefcase size={10} /> Work</span><button className="flex items-center gap-1 text-[#2DBFAE] hover:underline"><Plus size={12} /> Add tag</button></div><div className="flex items-center gap-1.5"><Clock size={13} /> Today, 2:14 PM</div><div className="flex items-center gap-1.5"><span className="h-1 w-1 rounded-full bg-[#E4E4ED] dark:bg-[#4B4B53]" /> Last edited 12 min ago</div><div className="flex items-center gap-1.5"><span className="h-1 w-1 rounded-full bg-[#E4E4ED] dark:bg-[#4B4B53]" /> 342 words</div></div>
+            <h1
+              style={{
+                ...tokens.typography.headingXL,
+                color: tokens.colors.textPrimary,
+              }}
+              className="mb-4"
+            >
+              Project Alpha – Milestone Notes
+            </h1>
+            <div
+              style={{
+                fontFamily: tokens.typography.bodySM.fontFamily,
+                fontSize: tokens.typography.bodySM.fontSize,
+                color: tokens.colors.textMuted,
+              }}
+              className="flex flex-wrap items-center gap-4"
+            >
+              <div className="flex items-center gap-2">
+                <span className="flex items-center gap-1 rounded-md bg-[#4B4453] px-2 py-0.5 font-medium text-[#A69FC1]">
+                  <Briefcase size={10} /> Work
+                </span>
+                <button
+                  style={{ color: tokens.colors.brand.teal }}
+                  className="flex items-center gap-1 hover:underline"
+                >
+                  <Plus size={12} /> Add tag
+                </button>
+              </div>
+              <div className="flex items-center gap-1.5"><Clock size={13} /> Today, 2:14 PM</div>
+              <div className="flex items-center gap-1.5"><span className="h-1 w-1 rounded-full bg-[#E4E4ED] dark:bg-[#4B4B53]" /> Last edited 12 min ago</div>
+              <div className="flex items-center gap-1.5"><span className="h-1 w-1 rounded-full bg-[#E4E4ED] dark:bg-[#4B4B53]" /> 342 words</div>
+            </div>
           </div>
 
-          <div className="space-y-6 leading-relaxed text-[#111111] dark:text-[#E2E2E6]"><p>This note captures the key decisions and action items from the Project Alpha kickoff meeting held today. The team aligned on the overall roadmap direction and agreed on the first set of deliverables for Q1.</p><h3 className="mt-8 mb-4 text-[18px] font-bold">Phase 1 – Discovery & Planning</h3><p>The first phase will run from <strong>December 15 to January 10</strong>. Primary goals include stakeholder interviews, competitive analysis, and technical scoping.</p><ul className="list-disc space-y-2 pl-5 text-[#2DBFAE]"><li><span className="text-[#111111] dark:text-[#E2E2E6]">Finalize user research interview guide by Dec 17</span></li><li><span className="text-[#111111] dark:text-[#E2E2E6]">Complete competitive landscape overview – assign to Jordan</span></li><li><span className="text-[#111111] dark:text-[#E2E2E6]">Infrastructure audit and tech stack confirmation by Dec 20</span></li><li><span className="text-[#111111] dark:text-[#E2E2E6]">Draft project brief and share with leadership for sign-off</span></li></ul><h3 className="mt-8 mb-4 text-[18px] font-bold">Key Decisions Made</h3><h4 className="mt-4 mb-2 text-[15px] font-semibold">Product Direction</h4><p>We agreed to prioritize the mobile-first experience for the initial launch. The desktop version will follow 6 weeks later with expanded feature parity. Analytics integration will be scoped as a separate workstream.</p><h4 className="mt-4 mb-2 text-[15px] font-semibold">Team Structure</h4><p>Core team: Alex (PM), Jordan (Design), Sam (Eng Lead), Maya (Data). Weekly syncs every Monday at 10am. Async standups via Slack daily.</p><div className="my-6 rounded-lg border border-[#B3E5DB] bg-[#E8F6F4] p-4 text-[#1A7364] dark:border-[#1E4D45] dark:bg-[#122A26] dark:text-[#84D4C5]"><strong>Reminder:</strong> Share the milestone doc with the full team by EOD Friday. All comments and feedback should be submitted via the shared doc before the next sync.</div><h3 className="mt-8 mb-4 text-[18px] font-bold">Open Questions</h3><ul className="list-disc space-y-2 pl-5"><li>Budget allocation for user research incentives — confirm with finance</li><li>External contractor scope — do we need a second engineer for Phase 2?</li><li>Data privacy compliance review — schedule with legal before Jan 5</li></ul><div className="mt-8 border-t border-[#E7E7EC] pt-4 text-[#9A99A6] dark:border-[#22222A] dark:text-[#66667A]">Type '/' for commands</div></div>
+          <div
+            style={{
+              fontFamily: tokens.typography.bodyLG.fontFamily,
+              fontSize: tokens.typography.bodyLG.fontSize,
+              lineHeight: 1.6,
+              color: tokens.colors.textPrimary,
+            }}
+            className="space-y-6"
+          >
+            <p>This note captures the key decisions and action items from the Project Alpha kickoff meeting held today. The team aligned on the overall roadmap direction and agreed on the first set of deliverables for Q1.</p>
+            <h3
+              style={{
+                ...tokens.typography.headingMD,
+                color: tokens.colors.textPrimary,
+              }}
+              className="mt-8 mb-4"
+            >
+              Phase 1 – Discovery & Planning
+            </h3>
+            <p>The first phase will run from <strong>December 15 to January 10</strong>. Primary goals include stakeholder interviews, competitive analysis, and technical scoping.</p>
+            <ul className="list-disc space-y-2 pl-5" style={{ color: tokens.colors.brand.teal }}>
+              <li><span style={{ color: tokens.colors.textPrimary }}>Finalize user research interview guide by Dec 17</span></li>
+              <li><span style={{ color: tokens.colors.textPrimary }}>Complete competitive landscape overview – assign to Jordan</span></li>
+              <li><span style={{ color: tokens.colors.textPrimary }}>Infrastructure audit and tech stack confirmation by Dec 20</span></li>
+              <li><span style={{ color: tokens.colors.textPrimary }}>Draft project brief and share with leadership for sign-off</span></li>
+            </ul>
+            <h3
+              style={{
+                ...tokens.typography.headingMD,
+                color: tokens.colors.textPrimary,
+              }}
+              className="mt-8 mb-4"
+            >
+              Key Decisions Made
+            </h3>
+            <h4
+              style={{
+                ...tokens.typography.headingSM,
+                color: tokens.colors.textPrimary,
+              }}
+              className="mt-4 mb-2"
+            >
+              Product Direction
+            </h4>
+            <p>We agreed to prioritize the mobile-first experience for the initial launch. The desktop version will follow 6 weeks later with expanded feature parity. Analytics integration will be scoped as a separate workstream.</p>
+            <h4
+              style={{
+                ...tokens.typography.headingSM,
+                color: tokens.colors.textPrimary,
+              }}
+              className="mt-4 mb-2"
+            >
+              Team Structure
+            </h4>
+            <p>Core team: Alex (PM), Jordan (Design), Sam (Eng Lead), Maya (Data). Weekly syncs every Monday at 10am. Async standups via Slack daily.</p>
+            <div
+              style={{
+                fontFamily: tokens.typography.bodyMD.fontFamily,
+                fontSize: tokens.typography.bodyMD.fontSize,
+              }}
+              className="my-6 rounded-lg border border-[#B3E5DB] bg-[#E8F6F4] p-4 text-[#1A7364] dark:border-[#1E4D45] dark:bg-[#122A26] dark:text-[#84D4C5]"
+            >
+              <strong>Reminder:</strong> Share the milestone doc with the full team by EOD Friday. All comments and feedback should be submitted via the shared doc before the next sync.
+            </div>
+            <h3
+              style={{
+                ...tokens.typography.headingMD,
+                color: tokens.colors.textPrimary,
+              }}
+              className="mt-8 mb-4"
+            >
+              Open Questions
+            </h3>
+            <ul className="list-disc space-y-2 pl-5">
+              <li>Budget allocation for user research incentives — confirm with finance</li>
+              <li>External contractor scope — do we need a second engineer for Phase 2?</li>
+              <li>Data privacy compliance review — schedule with legal before Jan 5</li>
+            </ul>
+            <div className="mt-8 border-t border-[#E7E7EC] pt-4 text-[#9A99A6] dark:border-[#22222A] dark:text-[#66667A]">Type '/' for commands</div>
+          </div>
         </div>
       </main>
 
       <NewNoteModal open={newNoteModalOpen} onClose={() => setNewNoteModalOpen(false)} />
-    </div>
+    </>
   )
 }
 

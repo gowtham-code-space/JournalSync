@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { X, Trash2, SquareCheck, Hash, MessageSquare, BarChart3 } from "lucide-react";
+import { X, Trash2, SquareCheck, Hash, MessageSquare, BarChart3 } from "@/theme/icons";
 import { Button, IconButton } from "@/components/primitives";
 import { useThemeStore } from "@/hooks/useThemeStore";
 import { getUiTokens } from "../uiTokens";

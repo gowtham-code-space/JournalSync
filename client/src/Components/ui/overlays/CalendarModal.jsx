@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight } from "@/theme/icons";
 import { Button, IconButton } from "@/components/primitives";
 import { useThemeStore } from "@/hooks/useThemeStore";
 import { getUiTokens } from "../uiTokens";
@@ -147,7 +147,7 @@ export default function CalendarModal({ open, onClose, month, year, onSelect }) 
                     ? {
                         color: tokens.colors.surface,
                         backgroundImage:
-                          "linear-gradient(135deg, #C13A8A 0%, #E8924A 55%, #2DBFAE 100%)",
+                          `linear-gradient(135deg, ${tokens.colors.brand.pink} 0%, ${tokens.colors.brand.orange} 55%, ${tokens.colors.brand.teal} 100%)`,
                       }
                     : {
                         color: tokens.colors.textSecondary,

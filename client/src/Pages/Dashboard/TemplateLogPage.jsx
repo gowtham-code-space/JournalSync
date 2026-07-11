@@ -8,7 +8,7 @@ import {
   Pencil,
   ChevronRight,
   Menu,
-} from "lucide-react";
+} from "@/theme/icons";
 import CalendarModal from '@/components/ui/overlays/CalendarModal';
 import ColumnEditorModal from '@/components/ui/overlays/ColumnEditorModal';
 import CommentModal from '@/components/ui/overlays/CommentModal';
