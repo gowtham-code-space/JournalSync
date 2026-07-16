@@ -1,0 +1,12 @@
+get:
+  tags:
+    - Health
+  summary: System Health Check
+  description: Verify that the API gateway is up and running.
+  responses:
+    '200':
+      description: The API Gateway is healthy.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/HealthStatus.yaml'

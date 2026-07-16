@@ -1,0 +1,49 @@
+openapi: 3.1.0
+info:
+  title: JournalSync API Documentation
+  version: 1.0.0
+  description: |
+    API documentation for JournalSync, a full-stack journal and task management system.
+    This documentation is API-First. The backend contract is entirely driven by these YAML files.
+servers:
+  - url: http://localhost:3000
+    description: API Gateway (Localhost)
+tags:
+  - name: Health
+    description: System health check endpoints
+  - name: Authentication
+    description: User login, registration, MFA, and session management
+  - name: Users
+    description: User profile management and settings
+  - name: Templates
+    description: Custom templates for structured journal entries
+  - name: Template Versions
+    description: Version control for journal entry templates
+  - name: Journal Entries
+    description: Standard and rich-text journal entries
+  - name: Notes
+    description: Quick thoughts and scratchpad entries
+  - name: Tasks
+    description: Action items and to-do lists
+  - name: Reminders
+    description: Scheduled notifications and alerts
+  - name: Attachments
+    description: File uploads (images, PDFs, voice notes)
+  - name: Collections
+    description: Folders or books of related journal entries
+  - name: Dashboards
+    description: Layouts and widgets for custom workspace dashboard
+  - name: Analytics
+    description: User insights, writing streaks, and task completions
+
+paths:
+  /health:
+    $ref: './paths/health.yaml'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Enter your JWT token to authenticate.
