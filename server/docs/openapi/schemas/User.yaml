@@ -1,0 +1,47 @@
+type: object
+required:
+  - id
+  - email
+  - firstName
+  - lastName
+  - isVerified
+  - createdAt
+  - updatedAt
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier of the user.
+    example: "d3b07384-d113-4956-a5cc-48144422e117"
+  email:
+    type: string
+    format: email
+    description: Email address of the user.
+    example: "john.doe@example.com"
+  firstName:
+    type: string
+    description: First name of the user.
+    example: "John"
+  lastName:
+    type: string
+    description: Last name of the user.
+    example: "Doe"
+  isVerified:
+    type: boolean
+    description: True if the user's email is verified.
+    example: true
+  role:
+    type: string
+    enum: [user, admin]
+    description: Role of the user.
+    example: "user"
+  createdAt:
+    type: string
+    format: date-time
+    description: Date and time of user creation.
+    example: "2026-07-21T12:00:00Z"
+  updatedAt:
+    type: string
+    format: date-time
+    description: Date and time of last update.
+    example: "2026-07-21T12:00:00Z"

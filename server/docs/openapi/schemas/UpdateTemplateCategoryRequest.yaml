@@ -1,0 +1,14 @@
+type: object
+properties:
+  name:
+    type: string
+    description: Updated name of the template category.
+    example: "Workplace & Office Logs"
+  color:
+    type: string
+    description: Updated hex color code.
+    example: "#FD7E14"
+  description:
+    type: string
+    description: Updated description of the category.
+    example: "Updated template category for tracking workplace activities."

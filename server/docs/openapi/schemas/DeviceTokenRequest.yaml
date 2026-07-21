@@ -1,0 +1,18 @@
+type: object
+required:
+  - token
+  - platform
+properties:
+  token:
+    type: string
+    description: Unique device/FCM push token.
+    example: "fcm-token-1234567890-abcdef..."
+  platform:
+    type: string
+    enum: [ios, android, web]
+    description: Device platform.
+    example: "web"
+  deviceName:
+    type: string
+    description: Readable name of the device.
+    example: "Chrome Browser on Mac"

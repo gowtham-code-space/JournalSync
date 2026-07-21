@@ -1,0 +1,32 @@
+type: object
+required:
+  - period
+  - dataPoints
+properties:
+  period:
+    type: string
+    enum: [weekly, monthly, yearly]
+    description: Timeframe of the trend statistics.
+    example: "monthly"
+  dataPoints:
+    type: array
+    description: Data points representing usage over time.
+    items:
+      type: object
+      required:
+        - label
+        - entryCount
+        - moodScore
+      properties:
+        label:
+          type: string
+          description: Label for the data point (e.g. date, week name, month name).
+          example: "July 2026"
+        entryCount:
+          type: integer
+          description: Number of journal entries created.
+          example: 18
+        moodScore:
+          type: number
+          description: Average user mood score.
+          example: 4.2

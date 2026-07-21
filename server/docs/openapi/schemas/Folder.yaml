@@ -1,0 +1,43 @@
+type: object
+required:
+  - id
+  - name
+  - isShared
+  - ownerId
+  - createdAt
+  - updatedAt
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier of the folder.
+    example: "5a2d8e41-b839-44fc-a0f1-0814421111ee"
+  name:
+    type: string
+    description: Name of the folder.
+    example: "Work Notes"
+  parentId:
+    type: string
+    format: uuid
+    nullable: true
+    description: Parent folder ID, if nested.
+    example: "0a1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"
+  isShared:
+    type: boolean
+    description: Indicates whether this folder is shared with other users.
+    example: false
+  ownerId:
+    type: string
+    format: uuid
+    description: User ID who owns the folder.
+    example: "d3b07384-d113-4956-a5cc-48144422e117"
+  createdAt:
+    type: string
+    format: date-time
+    description: Creation date-time.
+    example: "2026-07-21T12:00:00Z"
+  updatedAt:
+    type: string
+    format: date-time
+    description: Last update date-time.
+    example: "2026-07-21T12:00:00Z"

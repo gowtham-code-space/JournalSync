@@ -1,0 +1,67 @@
+get:
+  tags:
+    - Reminders
+  summary: Get notification settings
+  description: Retrieve the authenticated user's notification preferences.
+  operationId: getNotificationSettings
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Notification settings retrieved.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/NotificationSettings.yaml'
+    '401':
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ErrorResponse.yaml'
+    '500':
+      description: Server error.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ErrorResponse.yaml'
+
+patch:
+  tags:
+    - Reminders
+  summary: Update notification settings
+  description: Update notification options like email, push alerts, daily reminder times.
+  operationId: updateNotificationSettings
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/UpdateNotificationSettingsRequest.yaml'
+  responses:
+    '200':
+      description: Notification settings updated.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/NotificationSettings.yaml'
+    '400':
+      description: Invalid request parameter validation.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ErrorResponse.yaml'
+    '401':
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ErrorResponse.yaml'
+    '500':
+      description: Server error.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ErrorResponse.yaml'

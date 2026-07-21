@@ -1,0 +1,116 @@
+announcements:
+  get:
+    tags:
+      - Reminders
+    summary: Get system announcements
+    description: Retrieve current announcements targeted at the authenticated user's role.
+    operationId: listAnnouncements
+    security:
+      - BearerAuth: []
+    responses:
+      '200':
+        description: List of active announcements retrieved.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/Announcement.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+announcementsRead:
+  post:
+    tags:
+      - Reminders
+    summary: Mark announcement as read
+    description: Record that the user has acknowledged/read the announcement.
+    operationId: readAnnouncement
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the announcement.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '204':
+        description: Announcement successfully marked as read.
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Announcement not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+announcementsAdmin:
+  post:
+    tags:
+      - Reminders
+    summary: Create global announcement
+    description: Admin endpoint to broadcast a new system announcement.
+    operationId: createAdminAnnouncement
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/CreateAnnouncementRequest.yaml'
+    responses:
+      '201':
+        description: Announcement broadcasted successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Announcement.yaml'
+      '400':
+        description: Invalid request or validation failure.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '403':
+        description: Forbidden. Requester is not an admin.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'

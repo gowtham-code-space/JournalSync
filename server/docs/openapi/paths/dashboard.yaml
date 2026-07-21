@@ -1,0 +1,59 @@
+streaks:
+  get:
+    tags:
+      - Dashboards
+    summary: Get user writing streaks
+    description: Retrieve the active and longest journal writing streak statistics for the user.
+    operationId: getDashboardStreaks
+    security:
+      - BearerAuth: []
+    responses:
+      '200':
+        description: Streaks retrieved successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/StreakInfo.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+activeTemplates:
+  get:
+    tags:
+      - Dashboards
+    summary: Get user's active templates
+    description: Retrieve templates that the user has recently/frequently used for journaling.
+    operationId: getDashboardActiveTemplates
+    security:
+      - BearerAuth: []
+    responses:
+      '200':
+        description: Active templates list retrieved successfully.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/ActiveTemplate.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'

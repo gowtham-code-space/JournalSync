@@ -1,0 +1,25 @@
+type: object
+required:
+  - templateId
+  - action
+properties:
+  templateId:
+    type: string
+    format: uuid
+    description: ID of the template.
+    example: "cf8b31a8-89f5-48fa-a4a1-77884dca9c90"
+  versionId:
+    type: string
+    format: uuid
+    nullable: true
+    description: ID of the specific template version.
+    example: "7c9d81d2-0690-4a87-ad3b-74b868bb8b0f"
+  action:
+    type: string
+    enum: [create, update, delete, use]
+    description: Action performed on the template.
+    example: "use"
+  details:
+    type: object
+    description: Optional metadata payload.
+    example: { entryId: "9d8e4a7b-3b07-4e3f-a39c-eb41872dfd34" }

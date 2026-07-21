@@ -1,0 +1,27 @@
+type: object
+required:
+  - fields
+properties:
+  fields:
+    type: array
+    description: Updated field definitions for the new template version.
+    items:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+          example: "What did I learn today?"
+        type:
+          type: string
+          enum: [text, number, boolean, select]
+          example: "text"
+        required:
+          type: boolean
+          example: true
+        options:
+          type: array
+          items:
+            type: string

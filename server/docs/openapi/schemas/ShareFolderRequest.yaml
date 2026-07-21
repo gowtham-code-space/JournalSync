@@ -1,0 +1,15 @@
+type: object
+required:
+  - userId
+  - role
+properties:
+  userId:
+    type: string
+    format: uuid
+    description: User ID to share the folder with.
+    example: "e2c34a87-c102-4f30-ad3b-74b868bb8b0f"
+  role:
+    type: string
+    enum: [viewer, editor]
+    description: Access role for the folder.
+    example: "viewer"

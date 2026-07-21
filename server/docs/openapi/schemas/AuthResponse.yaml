@@ -1,0 +1,21 @@
+type: object
+required:
+  - success
+  - accessToken
+  - refreshToken
+  - user
+properties:
+  success:
+    type: boolean
+    description: Indicates whether the auth request was successful.
+    example: true
+  accessToken:
+    type: string
+    description: JWT access token.
+    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  refreshToken:
+    type: string
+    description: JWT refresh token.
+    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  user:
+    $ref: './User.yaml'

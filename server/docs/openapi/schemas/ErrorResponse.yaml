@@ -1,0 +1,31 @@
+type: object
+required:
+  - success
+  - message
+properties:
+  success:
+    type: boolean
+    description: Indicates whether the request was successful.
+    example: false
+  message:
+    type: string
+    description: A user-friendly error message.
+    example: "Invalid input data."
+  code:
+    type: string
+    description: A machine-readable error code.
+    example: "VALIDATION_ERROR"
+  errors:
+    type: array
+    description: Detailed validation or field errors.
+    items:
+      type: object
+      properties:
+        field:
+          type: string
+          description: The field that caused the error.
+          example: "email"
+        message:
+          type: string
+          description: Details about the field validation failure.
+          example: "Must be a valid email address."

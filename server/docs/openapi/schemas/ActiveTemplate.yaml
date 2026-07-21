@@ -1,0 +1,29 @@
+type: object
+required:
+  - templateId
+  - name
+  - usageCount
+  - lastUsedAt
+properties:
+  templateId:
+    type: string
+    format: uuid
+    description: ID of the template.
+    example: "bf8b31a8-89f5-48fa-a4a1-77884dca9c90"
+  name:
+    type: string
+    description: Name of the template.
+    example: "Daily Reflection"
+  description:
+    type: string
+    description: Description of the template.
+    example: "Template for documenting daily thoughts and feelings."
+  usageCount:
+    type: integer
+    description: Number of times this template has been used by the user.
+    example: 18
+  lastUsedAt:
+    type: string
+    format: date-time
+    description: When the template was last used.
+    example: "2026-07-20T18:30:00Z"

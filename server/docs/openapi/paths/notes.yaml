@@ -1,0 +1,226 @@
+notes:
+  get:
+    tags:
+      - Notes
+    summary: List note entries
+    description: Retrieve a list of notes. Can be filtered by categoryId, folderId, and search tags.
+    operationId: listNotes
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: folderId
+        in: query
+        required: false
+        description: Filter by folder ID.
+        schema:
+          type: string
+          format: uuid
+      - name: categoryId
+        in: query
+        required: false
+        description: Filter by category ID.
+        schema:
+          type: string
+          format: uuid
+      - name: tag
+        in: query
+        required: false
+        description: Filter by a specific tag.
+        schema:
+          type: string
+    responses:
+      '200':
+        description: A list of notes.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/Note.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  post:
+    tags:
+      - Notes
+    summary: Create a note
+    description: Create a new note entry.
+    operationId: createNote
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/CreateNoteRequest.yaml'
+    responses:
+      '201':
+        description: Note created successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Note.yaml'
+      '400':
+        description: Invalid request or validation failure.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+notesById:
+  get:
+    tags:
+      - Notes
+    summary: Get a note by ID
+    description: Retrieve details of a specific note.
+    operationId: getNoteById
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier of the note.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Note details retrieved successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Note.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Note not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  patch:
+    tags:
+      - Notes
+    summary: Update a note
+    description: Update content, category, folder, or title of an existing note.
+    operationId: updateNote
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the note to update.
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/UpdateNoteRequest.yaml'
+    responses:
+      '200':
+        description: Note updated successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Note.yaml'
+      '400':
+        description: Invalid request validation error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Note not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  delete:
+    tags:
+      - Notes
+    summary: Delete a note
+    description: Permenantly delete a note from the system.
+    operationId: deleteNote
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the note to delete.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '204':
+        description: Note deleted successfully.
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Note not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'

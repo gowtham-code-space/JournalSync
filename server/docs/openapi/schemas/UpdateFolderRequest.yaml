@@ -1,0 +1,8 @@
+type: object
+required:
+  - name
+properties:
+  name:
+    type: string
+    description: Updated name of the folder.
+    example: "Archived Work Notes"

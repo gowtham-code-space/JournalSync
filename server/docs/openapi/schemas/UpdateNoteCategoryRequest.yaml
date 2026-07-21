@@ -1,0 +1,10 @@
+type: object
+properties:
+  name:
+    type: string
+    description: Updated name of the category.
+    example: "Urgent Work"
+  color:
+    type: string
+    description: Updated hex color code representing the category.
+    example: "#DC3545"

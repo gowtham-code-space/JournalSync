@@ -1,0 +1,8 @@
+type: object
+required:
+  - token
+properties:
+  token:
+    type: string
+    description: Email verification token sent to the user's email.
+    example: "email-verification-token-xyz123"

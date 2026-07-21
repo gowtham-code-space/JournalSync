@@ -1,0 +1,19 @@
+type: object
+required:
+  - currentStreak
+  - longestStreak
+  - lastActiveDate
+properties:
+  currentStreak:
+    type: integer
+    description: Current consecutive writing streak in days.
+    example: 5
+  longestStreak:
+    type: integer
+    description: Longest writing streak in days ever recorded for the user.
+    example: 21
+  lastActiveDate:
+    type: string
+    format: date
+    description: The last date user logged a journal entry.
+    example: "2026-07-21"

@@ -1,0 +1,28 @@
+type: object
+properties:
+  title:
+    type: string
+    description: Updated title of the note.
+    example: "Project Brainstorming v2"
+  content:
+    type: string
+    description: Updated content of the note.
+    example: "Here are some revised thoughts..."
+  folderId:
+    type: string
+    format: uuid
+    nullable: true
+    description: ID of the folder to move the note to.
+    example: "5a2d8e41-b839-44fc-a0f1-0814421111ee"
+  categoryId:
+    type: string
+    format: uuid
+    nullable: true
+    description: Updated ID of the category.
+    example: "ca8b3504-20b1-4f0e-b7d1-ef49d012a64c"
+  tags:
+    type: array
+    items:
+      type: string
+    description: Updated list of tags.
+    example: ["ideas", "revised"]

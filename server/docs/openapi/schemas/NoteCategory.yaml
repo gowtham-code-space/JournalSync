@@ -1,0 +1,37 @@
+type: object
+required:
+  - id
+  - name
+  - color
+  - ownerId
+  - createdAt
+  - updatedAt
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier of the note category.
+    example: "ca8b3504-20b1-4f0e-b7d1-ef49d012a64c"
+  name:
+    type: string
+    description: Name of the category.
+    example: "Personal"
+  color:
+    type: string
+    description: Hex color code representing the category.
+    example: "#FF5733"
+  ownerId:
+    type: string
+    format: uuid
+    description: User ID who owns the category.
+    example: "d3b07384-d113-4956-a5cc-48144422e117"
+  createdAt:
+    type: string
+    format: date-time
+    description: Creation date-time.
+    example: "2026-07-21T12:00:00Z"
+  updatedAt:
+    type: string
+    format: date-time
+    description: Last updated date-time.
+    example: "2026-07-21T12:00:00Z"

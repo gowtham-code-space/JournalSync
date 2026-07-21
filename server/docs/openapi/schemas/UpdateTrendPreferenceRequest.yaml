@@ -1,0 +1,14 @@
+type: object
+properties:
+  showMood:
+    type: boolean
+    description: Display mood graph in trends visualization.
+    example: true
+  showCompletionRate:
+    type: boolean
+    description: Display completion rate in trends.
+    example: false
+  showWritingFrequency:
+    type: boolean
+    description: Display writing frequency in trends.
+    example: true

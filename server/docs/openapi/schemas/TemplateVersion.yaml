@@ -1,0 +1,56 @@
+type: object
+required:
+  - id
+  - templateId
+  - versionNumber
+  - fields
+  - createdBy
+  - createdAt
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier of this version.
+    example: "7c9d81d2-0690-4a87-ad3b-74b868bb8b0f"
+  templateId:
+    type: string
+    format: uuid
+    description: ID of the template this version belongs to.
+    example: "cf8b31a8-89f5-48fa-a4a1-77884dca9c90"
+  versionNumber:
+    type: integer
+    description: Version sequence number.
+    example: 2
+  fields:
+    type: array
+    description: Field definitions for this version of the template.
+    items:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+          example: "What went well today?"
+        type:
+          type: string
+          enum: [text, number, boolean, select]
+          example: "text"
+        required:
+          type: boolean
+          example: true
+        options:
+          type: array
+          items:
+            type: string
+  createdBy:
+    type: string
+    format: uuid
+    description: User ID who created this version.
+    example: "d3b07384-d113-4956-a5cc-48144422e117"
+  createdAt:
+    type: string
+    format: date-time
+    description: Creation date-time.
+    example: "2026-07-21T12:00:00Z"

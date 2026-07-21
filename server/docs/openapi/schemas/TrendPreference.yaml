@@ -1,0 +1,30 @@
+type: object
+required:
+  - id
+  - userId
+  - showMood
+  - showCompletionRate
+  - showWritingFrequency
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier of the trend preference.
+    example: "6c9d81d2-0690-4a87-ad3b-74b868bb8b0f"
+  userId:
+    type: string
+    format: uuid
+    description: User ID these preferences belong to.
+    example: "d3b07384-d113-4956-a5cc-48144422e117"
+  showMood:
+    type: boolean
+    description: Display mood graph in trends visualization.
+    example: true
+  showCompletionRate:
+    type: boolean
+    description: Display completion rate in trends.
+    example: false
+  showWritingFrequency:
+    type: boolean
+    description: Display writing frequency in trends.
+    example: true

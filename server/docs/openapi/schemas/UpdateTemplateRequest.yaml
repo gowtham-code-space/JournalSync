@@ -1,0 +1,39 @@
+type: object
+properties:
+  name:
+    type: string
+    description: Name of the template.
+    example: "Custom Daily Reflections"
+  description:
+    type: string
+    description: Description of the template.
+    example: "My customized reflection questions."
+  fields:
+    type: array
+    description: Field definitions for the template.
+    items:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+          example: "What went well today?"
+        type:
+          type: string
+          enum: [text, number, boolean, select]
+          example: "text"
+        required:
+          type: boolean
+          example: true
+        options:
+          type: array
+          items:
+            type: string
+  categoryId:
+    type: string
+    format: uuid
+    nullable: true
+    description: Category ID associated with the template.
+    example: "ea8b3504-20b1-4f0e-b7d1-ef49d012a64c"

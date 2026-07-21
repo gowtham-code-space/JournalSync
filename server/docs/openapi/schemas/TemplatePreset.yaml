@@ -1,0 +1,49 @@
+type: object
+required:
+  - id
+  - name
+  - description
+  - fields
+  - category
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier of the preset template.
+    example: "bf8b31a8-89f5-48fa-a4a1-77884dca9c90"
+  name:
+    type: string
+    description: Name of the preset.
+    example: "Gratitude Journal"
+  description:
+    type: string
+    description: Description of what this preset is for.
+    example: "A simple daily log to focus on positive things."
+  fields:
+    type: array
+    description: Field definitions for the preset template.
+    items:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+          example: "Three things I am grateful for"
+        type:
+          type: string
+          enum: [text, number, boolean, select]
+          example: "text"
+        required:
+          type: boolean
+          example: true
+        options:
+          type: array
+          items:
+            type: string
+          example: []
+  category:
+    type: string
+    description: Category label for the preset.
+    example: "Mindfulness"

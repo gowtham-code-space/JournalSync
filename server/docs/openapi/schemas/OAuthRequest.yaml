@@ -1,0 +1,14 @@
+type: object
+required:
+  - provider
+  - token
+properties:
+  provider:
+    type: string
+    enum: [google, github]
+    description: OAuth provider name.
+    example: "google"
+  token:
+    type: string
+    description: Access token or auth code from the provider.
+    example: "ya29.a0AfH6SMA..."

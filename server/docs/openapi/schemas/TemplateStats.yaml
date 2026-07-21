@@ -1,0 +1,33 @@
+type: object
+required:
+  - templateId
+  - name
+  - usageCount
+  - completionRate
+  - averageRating
+properties:
+  templateId:
+    type: string
+    format: uuid
+    description: ID of the template.
+    example: "bf8b31a8-89f5-48fa-a4a1-77884dca9c90"
+  name:
+    type: string
+    description: Name of the template.
+    example: "Daily Reflection"
+  usageCount:
+    type: integer
+    description: Total number of times this template was used.
+    example: 45
+  completionRate:
+    type: number
+    minimum: 0
+    maximum: 100
+    description: Percentage of entries using this template that were marked as complete or fully filled.
+    example: 92.5
+  averageRating:
+    type: number
+    minimum: 1
+    maximum: 5
+    description: Average rating given by the user for entries of this template.
+    example: 4.8

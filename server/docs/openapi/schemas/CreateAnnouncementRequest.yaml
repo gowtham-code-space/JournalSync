@@ -1,0 +1,25 @@
+type: object
+required:
+  - title
+  - content
+  - type
+properties:
+  title:
+    type: string
+    description: Title of the announcement.
+    example: "New Template System"
+  content:
+    type: string
+    description: Announcement message detail.
+    example: "We have released the new customizable templates feature today!"
+  type:
+    type: string
+    enum: [info, warning, update]
+    description: Priority/category type of announcement.
+    example: "update"
+  targetRoles:
+    type: array
+    items:
+      type: string
+    description: List of targeted roles for this announcement. If omitted, all roles.
+    example: ["user", "admin"]

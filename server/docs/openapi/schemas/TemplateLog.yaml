@@ -1,0 +1,43 @@
+type: object
+required:
+  - id
+  - templateId
+  - action
+  - userId
+  - createdAt
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier of this log.
+    example: "8c9d81d2-0690-4a87-ad3b-74b868bb8b0f"
+  templateId:
+    type: string
+    format: uuid
+    description: ID of the template logged.
+    example: "cf8b31a8-89f5-48fa-a4a1-77884dca9c90"
+  versionId:
+    type: string
+    format: uuid
+    nullable: true
+    description: ID of the specific template version, if applicable.
+    example: "7c9d81d2-0690-4a87-ad3b-74b868bb8b0f"
+  action:
+    type: string
+    enum: [create, update, delete, use]
+    description: Action performed on the template.
+    example: "use"
+  userId:
+    type: string
+    format: uuid
+    description: User ID who performed the action.
+    example: "d3b07384-d113-4956-a5cc-48144422e117"
+  details:
+    type: object
+    description: Optional free-form key-value metadata details.
+    example: { entryId: "9d8e4a7b-3b07-4e3f-a39c-eb41872dfd34" }
+  createdAt:
+    type: string
+    format: date-time
+    description: Log timestamp.
+    example: "2026-07-21T12:00:00Z"

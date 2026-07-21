@@ -1,0 +1,123 @@
+templates:
+  get:
+    tags:
+      - Analytics
+    summary: Get template statistics
+    description: Retrieve detailed analytics/usage statistics for all journal templates.
+    operationId: getTemplateStats
+    security:
+      - BearerAuth: []
+    responses:
+      '200':
+        description: Template statistics retrieved.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/TemplateStats.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+trends:
+  get:
+    tags:
+      - Analytics
+    summary: Get writing trends
+    description: Retrieve analytical trends data (e.g. writing frequency, mood metrics) filtered by period.
+    operationId: getTrendStats
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: period
+        in: query
+        required: false
+        description: Period for trend analysis (weekly, monthly, yearly).
+        schema:
+          type: string
+          enum: [weekly, monthly, yearly]
+          default: monthly
+    responses:
+      '200':
+        description: Writing trends data retrieved.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/TrendStats.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+trendPreferenceById:
+  patch:
+    tags:
+      - Analytics
+    summary: Update trend preference
+    description: Update custom trend visualization preferences for a user by preference ID.
+    operationId: updateTrendPreference
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier of the trend preference record.
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/UpdateTrendPreferenceRequest.yaml'
+    responses:
+      '200':
+        description: Trend preference updated successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/TrendPreference.yaml'
+      '400':
+        description: Invalid request body or validation error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Trend preference ID not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'

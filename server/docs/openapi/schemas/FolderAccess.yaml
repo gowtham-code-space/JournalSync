@@ -1,0 +1,39 @@
+type: object
+required:
+  - folderId
+  - userId
+  - role
+  - status
+  - createdAt
+  - updatedAt
+properties:
+  folderId:
+    type: string
+    format: uuid
+    description: ID of the shared folder.
+    example: "5a2d8e41-b839-44fc-a0f1-0814421111ee"
+  userId:
+    type: string
+    format: uuid
+    description: User ID granted access.
+    example: "e2c34a87-c102-4f30-ad3b-74b868bb8b0f"
+  role:
+    type: string
+    enum: [viewer, editor]
+    description: Access role for the folder.
+    example: "viewer"
+  status:
+    type: string
+    enum: [pending, accepted, declined]
+    description: Status of the folder sharing invitation.
+    example: "pending"
+  createdAt:
+    type: string
+    format: date-time
+    description: Access created timestamp.
+    example: "2026-07-21T12:00:00Z"
+  updatedAt:
+    type: string
+    format: date-time
+    description: Access last updated timestamp.
+    example: "2026-07-21T12:00:00Z"

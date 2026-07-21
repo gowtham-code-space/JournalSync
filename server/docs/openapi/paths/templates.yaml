@@ -1,0 +1,670 @@
+presets:
+  get:
+    tags:
+      - Templates
+    summary: List preset templates
+    description: Retrieve a list of all global system preset templates.
+    operationId: listPresetTemplates
+    security:
+      - BearerAuth: []
+    responses:
+      '200':
+        description: List of preset templates retrieved.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/TemplatePreset.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+presetsById:
+  get:
+    tags:
+      - Templates
+    summary: Get preset template details
+    description: Retrieve a specific system preset template by ID.
+    operationId: getPresetTemplateById
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the preset template.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Preset template details retrieved.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/TemplatePreset.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Preset template not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+templates:
+  get:
+    tags:
+      - Templates
+    summary: List user templates
+    description: Retrieve a list of templates created by the user or global presets.
+    operationId: listUserTemplates
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: categoryId
+        in: query
+        required: false
+        description: Filter templates by category ID.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: A list of templates.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/Template.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  post:
+    tags:
+      - Templates
+    summary: Create a template
+    description: Create a new custom journal template.
+    operationId: createUserTemplate
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/CreateTemplateRequest.yaml'
+    responses:
+      '201':
+        description: Custom template created.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Template.yaml'
+      '400':
+        description: Invalid request or validation error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+templatesById:
+  get:
+    tags:
+      - Templates
+    summary: Get template by ID
+    description: Retrieve details of a custom template or preset.
+    operationId: getTemplateById
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the template.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Template details retrieved.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Template.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Template not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  patch:
+    tags:
+      - Templates
+    summary: Update a template
+    description: Edit metadata or fields of a custom template.
+    operationId: updateUserTemplate
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the template to update.
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/UpdateTemplateRequest.yaml'
+    responses:
+      '200':
+        description: Template updated successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Template.yaml'
+      '400':
+        description: Invalid request or validation error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Template not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  delete:
+    tags:
+      - Templates
+    summary: Delete a template
+    description: Permenantly delete a custom template.
+    operationId: deleteUserTemplate
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the template to delete.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '204':
+        description: Template deleted successfully.
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Template not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+templatesVersions:
+  get:
+    tags:
+      - Template Versions
+    summary: List template versions
+    description: Retrieve a version history of a specific template.
+    operationId: listTemplateVersions
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the template.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: List of versions retrieved.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/TemplateVersion.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Template not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  post:
+    tags:
+      - Template Versions
+    summary: Create template version
+    description: Create a new version for a specific template.
+    operationId: createTemplateVersion
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the template.
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/CreateTemplateVersionRequest.yaml'
+    responses:
+      '201':
+        description: New template version created.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/TemplateVersion.yaml'
+      '400':
+        description: Invalid request or validation error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Template not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+templatesVersionsById:
+  get:
+    tags:
+      - Template Versions
+    summary: Get template version by ID
+    description: Retrieve details of a specific version of a template.
+    operationId: getTemplateVersionById
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the template.
+        schema:
+          type: string
+          format: uuid
+      - name: versionId
+        in: path
+        required: true
+        description: ID of the template version.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Template version details retrieved.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/TemplateVersion.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Template or version not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+templatesLogs:
+  get:
+    tags:
+      - Templates
+    summary: List template logs
+    description: Retrieve modification and usage logs for a specific template.
+    operationId: listTemplateLogs
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the template.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: List of template logs retrieved.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/TemplateLog.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Template not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  post:
+    tags:
+      - Templates
+    summary: Create template log
+    description: Write a new usage or configuration log entry for a template.
+    operationId: createTemplateLog
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the template.
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/CreateTemplateLogRequest.yaml'
+    responses:
+      '201':
+        description: Template log created successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/TemplateLog.yaml'
+      '400':
+        description: Invalid request parameter validation.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Template not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+logsById:
+  get:
+    tags:
+      - Templates
+    summary: Get template log details
+    description: Retrieve detailed metadata of a specific template log entry by log ID.
+    operationId: getTemplateLogById
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the template log entry.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Template log details retrieved.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/TemplateLog.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Template log not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  patch:
+    tags:
+      - Templates
+    summary: Update template log details
+    description: Update the metadata details for a specific template log entry.
+    operationId: updateTemplateLog
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the template log entry.
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/UpdateTemplateLogRequest.yaml'
+    responses:
+      '200':
+        description: Template log details updated.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/TemplateLog.yaml'
+      '400':
+        description: Invalid request or validation error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Template log not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  delete:
+    tags:
+      - Templates
+    summary: Delete template log
+    description: Delete a specific template log entry.
+    operationId: deleteTemplateLog
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the template log entry to delete.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '204':
+        description: Template log deleted successfully.
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Template log not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'

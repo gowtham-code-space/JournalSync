@@ -1,0 +1,8 @@
+type: object
+required:
+  - details
+properties:
+  details:
+    type: object
+    description: Updated metadata payload for the log.
+    example: { entryId: "9d8e4a7b-3b07-4e3f-a39c-eb41872dfd34", reason: "re-run analysis" }

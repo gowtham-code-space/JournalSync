@@ -1,0 +1,67 @@
+get:
+  tags:
+    - Users
+  summary: Get current user profile
+  description: Retrieve detailed profile details of the current logged-in user.
+  operationId: getCurrentUserProfile
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: User profile details retrieved successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/User.yaml'
+    '401':
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ErrorResponse.yaml'
+    '500':
+      description: Server error.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ErrorResponse.yaml'
+
+patch:
+  tags:
+    - Users
+  summary: Update user profile
+  description: Update profile details for the authenticated user.
+  operationId: updateCurrentUserProfile
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/UpdateUserRequest.yaml'
+  responses:
+    '200':
+      description: User profile updated successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/User.yaml'
+    '400':
+      description: Invalid request body or validation error.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ErrorResponse.yaml'
+    '401':
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ErrorResponse.yaml'
+    '500':
+      description: Server error.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ErrorResponse.yaml'

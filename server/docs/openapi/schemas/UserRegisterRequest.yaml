@@ -1,0 +1,25 @@
+type: object
+required:
+  - email
+  - password
+  - firstName
+  - lastName
+properties:
+  email:
+    type: string
+    format: email
+    description: Email address of the user.
+    example: "john.doe@example.com"
+  password:
+    type: string
+    minLength: 8
+    description: Password of the user.
+    example: "SecretPassword123!"
+  firstName:
+    type: string
+    description: First name of the user.
+    example: "John"
+  lastName:
+    type: string
+    description: Last name of the user.
+    example: "Doe"

@@ -1,0 +1,8 @@
+type: object
+required:
+  - refreshToken
+properties:
+  refreshToken:
+    type: string
+    description: The refresh token returned upon login or registration.
+    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."

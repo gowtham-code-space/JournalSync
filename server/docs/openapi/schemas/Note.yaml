@@ -1,0 +1,55 @@
+type: object
+required:
+  - id
+  - title
+  - content
+  - ownerId
+  - createdAt
+  - updatedAt
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier of the note.
+    example: "8c7a6e14-d830-4e3f-a39c-eb41872dfd34"
+  title:
+    type: string
+    description: Title of the note.
+    example: "Project Brainstorming"
+  content:
+    type: string
+    description: Text or markdown content of the note.
+    example: "Here are some initial thoughts on architecture..."
+  folderId:
+    type: string
+    format: uuid
+    nullable: true
+    description: ID of the folder this note belongs to, if any.
+    example: "5a2d8e41-b839-44fc-a0f1-0814421111ee"
+  categoryId:
+    type: string
+    format: uuid
+    nullable: true
+    description: ID of the category this note belongs to, if any.
+    example: "ca8b3504-20b1-4f0e-b7d1-ef49d012a64c"
+  tags:
+    type: array
+    items:
+      type: string
+    description: List of tag tags associated with the note.
+    example: ["ideas", "draft", "v1"]
+  ownerId:
+    type: string
+    format: uuid
+    description: User ID of the note owner.
+    example: "d3b07384-d113-4956-a5cc-48144422e117"
+  createdAt:
+    type: string
+    format: date-time
+    description: Creation timestamp.
+    example: "2026-07-21T12:00:00Z"
+  updatedAt:
+    type: string
+    format: date-time
+    description: Last update timestamp.
+    example: "2026-07-21T12:00:00Z"

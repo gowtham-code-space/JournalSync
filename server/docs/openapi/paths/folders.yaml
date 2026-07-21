@@ -1,0 +1,370 @@
+folders:
+  get:
+    tags:
+      - Collections
+    summary: List folders
+    description: Retrieve list of all folders owned by or shared with the authenticated user.
+    operationId: listFolders
+    security:
+      - BearerAuth: []
+    responses:
+      '200':
+        description: List of folders retrieved.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/Folder.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  post:
+    tags:
+      - Collections
+    summary: Create a folder
+    description: Create a new folder for note organization.
+    operationId: createFolder
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/CreateFolderRequest.yaml'
+    responses:
+      '201':
+        description: Folder created successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Folder.yaml'
+      '400':
+        description: Invalid request or validation failure.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+foldersById:
+  patch:
+    tags:
+      - Collections
+    summary: Update a folder
+    description: Rename or move a folder.
+    operationId: updateFolder
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the folder to update.
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/UpdateFolderRequest.yaml'
+    responses:
+      '200':
+        description: Folder updated successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Folder.yaml'
+      '400':
+        description: Invalid input/validation failure.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Folder not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  delete:
+    tags:
+      - Collections
+    summary: Delete a folder
+    description: Delete a folder and optionally all its contents.
+    operationId: deleteFolder
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the folder to delete.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '204':
+        description: Folder deleted successfully.
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Folder not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+foldersShare:
+  post:
+    tags:
+      - Collections
+    summary: Share folder access
+    description: Share access to a folder with another user.
+    operationId: shareFolder
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the folder to share.
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ShareFolderRequest.yaml'
+    responses:
+      '200':
+        description: Folder shared successfully. Invitation sent.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/FolderAccess.yaml'
+      '400':
+        description: Invalid request or validation error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Folder or user not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+foldersAccess:
+  get:
+    tags:
+      - Collections
+    summary: Get folder access list
+    description: Retrieve a list of all user access grants/invitations for a folder.
+    operationId: getFolderAccessList
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the folder.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Folder access list retrieved.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/FolderAccess.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Folder not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+foldersAccessById:
+  patch:
+    tags:
+      - Collections
+    summary: Update user folder access role
+    description: Update the permission role of a user on a shared folder.
+    operationId: updateFolderAccess
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the folder.
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        required: true
+        description: ID of the user whose access is being updated.
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/UpdateFolderAccessRequest.yaml'
+    responses:
+      '200':
+        description: Folder access role updated.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/FolderAccess.yaml'
+      '400':
+        description: Invalid role or parameter.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Folder or user access record not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  delete:
+    tags:
+      - Collections
+    summary: Remove folder access
+    description: Revoke a user's access permission to a shared folder.
+    operationId: revokeFolderAccess
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the folder.
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        required: true
+        description: ID of the user whose access is being revoked.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '204':
+        description: Folder access revoked successfully.
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Folder or user access record not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'

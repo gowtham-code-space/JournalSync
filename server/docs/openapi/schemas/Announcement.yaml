@@ -1,0 +1,37 @@
+type: object
+required:
+  - id
+  - title
+  - content
+  - type
+  - createdAt
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier of the announcement.
+    example: "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+  title:
+    type: string
+    description: Title of the announcement.
+    example: "Scheduled Maintenance"
+  content:
+    type: string
+    description: Full text message.
+    example: "The platform will be down for scheduled maintenance on Sunday between 2 AM and 4 AM UTC."
+  type:
+    type: string
+    enum: [info, warning, update]
+    description: Priority/category type of announcement.
+    example: "warning"
+  targetRoles:
+    type: array
+    items:
+      type: string
+    description: Target user roles (e.g. user, admin) who can see this.
+    example: ["user"]
+  createdAt:
+    type: string
+    format: date-time
+    description: Creation date-time.
+    example: "2026-07-21T12:00:00Z"

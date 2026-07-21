@@ -1,0 +1,10 @@
+type: object
+properties:
+  firstName:
+    type: string
+    description: Updated first name.
+    example: "Johnny"
+  lastName:
+    type: string
+    description: Updated last name.
+    example: "Appleseed"

@@ -1,0 +1,323 @@
+register:
+  post:
+    tags:
+      - Authentication
+    summary: Register a new user
+    description: Create a new user account with email and password.
+    operationId: registerUser
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/UserRegisterRequest.yaml'
+    responses:
+      '201':
+        description: User registered successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/AuthResponse.yaml'
+      '400':
+        description: Invalid request body/validation failure.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '409':
+        description: Email already registered.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+login:
+  post:
+    tags:
+      - Authentication
+    summary: User login
+    description: Authenticate user using email and password credentials.
+    operationId: loginUser
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/UserLoginRequest.yaml'
+    responses:
+      '200':
+        description: Logged in successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/AuthResponse.yaml'
+      '400':
+        description: Invalid input validation.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Invalid credentials.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+oauth:
+  post:
+    tags:
+      - Authentication
+    summary: OAuth social sign-in
+    description: Sign in or register via an OAuth provider like Google or GitHub.
+    operationId: oauthSignIn
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/OAuthRequest.yaml'
+    responses:
+      '200':
+        description: OAuth sign-in successful.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/AuthResponse.yaml'
+      '400':
+        description: Invalid token/validation error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+logout:
+  post:
+    tags:
+      - Authentication
+    summary: Logout user
+    description: Terminate the user's session and invalidate refresh tokens.
+    operationId: logoutUser
+    security:
+      - BearerAuth: []
+    responses:
+      '204':
+        description: Successfully logged out.
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+refresh:
+  post:
+    tags:
+      - Authentication
+    summary: Refresh access token
+    description: Get a new JWT access token using a refresh token.
+    operationId: refreshToken
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/TokenRefreshRequest.yaml'
+    responses:
+      '200':
+        description: Access token refreshed.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/AuthResponse.yaml'
+      '401':
+        description: Invalid or expired refresh token.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+me:
+  get:
+    tags:
+      - Authentication
+    summary: Get current authenticated user session info
+    description: Return user session metadata.
+    operationId: getAuthMe
+    security:
+      - BearerAuth: []
+    responses:
+      '200':
+        description: User details retrieved.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/User.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+verifyEmail:
+  post:
+    tags:
+      - Authentication
+    summary: Verify email address
+    description: Confirm email using token sent during registration.
+    operationId: verifyEmail
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/VerifyEmailRequest.yaml'
+    responses:
+      '200':
+        description: Email verified successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Email verified successfully."
+      '400':
+        description: Invalid or expired token.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+forgotPassword:
+  post:
+    tags:
+      - Authentication
+    summary: Request password recovery
+    description: Send a password reset link to user's email.
+    operationId: forgotPassword
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ForgotPasswordRequest.yaml'
+    responses:
+      '200':
+        description: Recovery email sent.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Password reset link sent to your email."
+      '400':
+        description: Invalid email or validation error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Email not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+resetPassword:
+  post:
+    tags:
+      - Authentication
+    summary: Reset password
+    description: Reset password using verification token.
+    operationId: resetPassword
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ResetPasswordRequest.yaml'
+    responses:
+      '200':
+        description: Password reset successful.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Password reset successfully."
+      '400':
+        description: Invalid input/weak password/invalid token.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'

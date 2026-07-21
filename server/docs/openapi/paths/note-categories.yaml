@@ -1,0 +1,169 @@
+categories:
+  get:
+    tags:
+      - Notes
+    summary: List note categories
+    description: Retrieve a list of all note categories created by the user.
+    operationId: listNoteCategories
+    security:
+      - BearerAuth: []
+    responses:
+      '200':
+        description: A list of note categories.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/NoteCategory.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  post:
+    tags:
+      - Notes
+    summary: Create note category
+    description: Create a new category to organize notes.
+    operationId: createNoteCategory
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/CreateNoteCategoryRequest.yaml'
+    responses:
+      '201':
+        description: Note category created successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/NoteCategory.yaml'
+      '400':
+        description: Invalid request body or validation failure.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '409':
+        description: Category name already exists.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+categoriesById:
+  patch:
+    tags:
+      - Notes
+    summary: Update note category
+    description: Update details of an existing note category.
+    operationId: updateNoteCategory
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the note category.
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/UpdateNoteCategoryRequest.yaml'
+    responses:
+      '200':
+        description: Note category updated successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/NoteCategory.yaml'
+      '400':
+        description: Invalid request or validation error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Category ID not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  delete:
+    tags:
+      - Notes
+    summary: Delete note category
+    description: Remove a note category. Notes in this category are uncategorized.
+    operationId: deleteNoteCategory
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the note category to delete.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '204':
+        description: Note category deleted successfully.
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Category ID not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'

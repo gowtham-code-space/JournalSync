@@ -1,0 +1,169 @@
+categories:
+  get:
+    tags:
+      - Templates
+    summary: List template categories
+    description: Retrieve list of template categories for user and presets.
+    operationId: listTemplateCategories
+    security:
+      - BearerAuth: []
+    responses:
+      '200':
+        description: List of template categories.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/TemplateCategory.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  post:
+    tags:
+      - Templates
+    summary: Create template category
+    description: Create a new custom template category.
+    operationId: createTemplateCategory
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/CreateTemplateCategoryRequest.yaml'
+    responses:
+      '201':
+        description: Template category created.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/TemplateCategory.yaml'
+      '400':
+        description: Invalid request body or validation error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '409':
+        description: Category name already exists.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+categoriesById:
+  patch:
+    tags:
+      - Templates
+    summary: Update template category
+    description: Update name, color, or description of a template category.
+    operationId: updateTemplateCategory
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the template category.
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/UpdateTemplateCategoryRequest.yaml'
+    responses:
+      '200':
+        description: Template category updated successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/TemplateCategory.yaml'
+      '400':
+        description: Invalid request body or validation error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Category not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+  delete:
+    tags:
+      - Templates
+    summary: Delete template category
+    description: Delete template category. Templates in this category become uncategorized.
+    operationId: deleteTemplateCategory
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the template category to delete.
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '204':
+        description: Template category deleted successfully.
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Category not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'

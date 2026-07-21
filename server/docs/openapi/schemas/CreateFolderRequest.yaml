@@ -1,0 +1,14 @@
+type: object
+required:
+  - name
+properties:
+  name:
+    type: string
+    description: Name of the folder.
+    example: "Work Notes"
+  parentId:
+    type: string
+    format: uuid
+    nullable: true
+    description: Parent folder ID, if nested.
+    example: "0a1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"

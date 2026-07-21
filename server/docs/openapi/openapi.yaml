@@ -1,0 +1,157 @@
+openapi: 3.1.0
+info:
+  title: JournalSync API Documentation
+  version: 1.0.0
+  description: |
+    API documentation for JournalSync, a full-stack journal and task management system.
+    This documentation is API-First. The backend contract is entirely driven by these YAML files.
+servers:
+  - url: http://localhost:3000
+    description: API Gateway (Localhost)
+tags:
+  - name: Health
+    description: System health check endpoints
+  - name: Authentication
+    description: User login, registration, MFA, and session management
+  - name: Users
+    description: User profile management and settings
+  - name: Templates
+    description: Custom templates for structured journal entries
+  - name: Template Versions
+    description: Version control for journal entry templates
+  - name: Journal Entries
+    description: Standard and rich-text journal entries
+  - name: Notes
+    description: Quick thoughts and scratchpad entries
+  - name: Tasks
+    description: Action items and to-do lists
+  - name: Reminders
+    description: Scheduled notifications and alerts
+  - name: Attachments
+    description: File uploads (images, PDFs, voice notes)
+  - name: Collections
+    description: Folders or books of related journal entries
+  - name: Dashboards
+    description: Layouts and widgets for custom workspace dashboard
+  - name: Analytics
+    description: User insights, writing streaks, and task completions
+
+paths:
+  /health:
+    $ref: './paths/health.yaml'
+
+  # Authentication
+  /api/v1/auth/register:
+    $ref: './paths/auth.yaml#/register'
+  /api/v1/auth/login:
+    $ref: './paths/auth.yaml#/login'
+  /api/v1/auth/oauth:
+    $ref: './paths/auth.yaml#/oauth'
+  /api/v1/auth/logout:
+    $ref: './paths/auth.yaml#/logout'
+  /api/v1/auth/refresh:
+    $ref: './paths/auth.yaml#/refresh'
+  /api/v1/auth/me:
+    $ref: './paths/auth.yaml#/me'
+  /api/v1/auth/verify-email:
+    $ref: './paths/auth.yaml#/verifyEmail'
+  /api/v1/auth/forgot-password:
+    $ref: './paths/auth.yaml#/forgotPassword'
+  /api/v1/auth/reset-password:
+    $ref: './paths/auth.yaml#/resetPassword'
+
+  # Users
+  /api/v1/users/me:
+    $ref: './paths/users.yaml'
+
+  # Dashboard
+  /api/v1/dashboard/streaks:
+    $ref: './paths/dashboard.yaml#/streaks'
+  /api/v1/dashboard/active-templates:
+    $ref: './paths/dashboard.yaml#/activeTemplates'
+
+  # Statistics / Analytics
+  /api/v1/stats/templates:
+    $ref: './paths/stats.yaml#/templates'
+  /api/v1/stats/trends:
+    $ref: './paths/stats.yaml#/trends'
+  /api/v1/stats/trend-preference/{id}:
+    $ref: './paths/stats.yaml#/trendPreferenceById'
+
+  # Notes - Categories
+  /api/v1/note-categories:
+    $ref: './paths/note-categories.yaml#/categories'
+  /api/v1/note-categories/{id}:
+    $ref: './paths/note-categories.yaml#/categoriesById'
+
+  # Notes - Notes
+  /api/v1/notes:
+    $ref: './paths/notes.yaml#/notes'
+  /api/v1/notes/{id}:
+    $ref: './paths/notes.yaml#/notesById'
+
+  # Notes - Folder Management & Sharing
+  /api/v1/folders:
+    $ref: './paths/folders.yaml#/folders'
+  /api/v1/folders/{id}:
+    $ref: './paths/folders.yaml#/foldersById'
+  /api/v1/folders/{id}/share:
+    $ref: './paths/folders.yaml#/foldersShare'
+  /api/v1/folders/{id}/access:
+    $ref: './paths/folders.yaml#/foldersAccess'
+  /api/v1/folders/{id}/access/{userId}:
+    $ref: './paths/folders.yaml#/foldersAccessById'
+
+  # Notifications - Announcements
+  /api/v1/announcements:
+    $ref: './paths/announcements.yaml#/announcements'
+  /api/v1/announcements/{id}/read:
+    $ref: './paths/announcements.yaml#/announcementsRead'
+  /api/v1/admin/announcements:
+    $ref: './paths/announcements.yaml#/announcementsAdmin'
+
+  # Notifications - Device Tokens
+  /api/v1/devices:
+    $ref: './paths/devices.yaml#/devices'
+  /api/v1/devices/{token}:
+    $ref: './paths/devices.yaml#/devicesByToken'
+
+  # Notifications - Notification Settings
+  /api/v1/notification-settings:
+    $ref: './paths/notification-settings.yaml'
+
+  # Templates - Presets & Custom Templates
+  /api/v1/templates/presets:
+    $ref: './paths/templates.yaml#/presets'
+  /api/v1/templates/presets/{id}:
+    $ref: './paths/templates.yaml#/presetsById'
+  /api/v1/templates:
+    $ref: './paths/templates.yaml#/templates'
+  /api/v1/templates/{id}:
+    $ref: './paths/templates.yaml#/templatesById'
+
+  # Templates - Categories
+  /api/v1/template-categories:
+    $ref: './paths/template-categories.yaml#/categories'
+  /api/v1/template-categories/{id}:
+    $ref: './paths/template-categories.yaml#/categoriesById'
+
+  # Templates - Versions
+  /api/v1/templates/{id}/versions:
+    $ref: './paths/templates.yaml#/templatesVersions'
+  /api/v1/templates/{id}/versions/{versionId}:
+    $ref: './paths/templates.yaml#/templatesVersionsById'
+
+  # Templates - Logs
+  /api/v1/templates/{id}/logs:
+    $ref: './paths/templates.yaml#/templatesLogs'
+  /api/v1/logs/{id}:
+    $ref: './paths/templates.yaml#/logsById'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Enter your JWT token to authenticate.

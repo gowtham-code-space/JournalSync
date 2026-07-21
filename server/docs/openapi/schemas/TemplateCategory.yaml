@@ -1,0 +1,36 @@
+type: object
+required:
+  - id
+  - name
+  - color
+  - description
+  - createdAt
+  - updatedAt
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier of the template category.
+    example: "ea8b3504-20b1-4f0e-b7d1-ef49d012a64c"
+  name:
+    type: string
+    description: Name of the template category.
+    example: "Productivity"
+  color:
+    type: string
+    description: Hex color representation.
+    example: "#28A745"
+  description:
+    type: string
+    description: Details about the category.
+    example: "Templates designed for setting goals and tracking progress."
+  createdAt:
+    type: string
+    format: date-time
+    description: Creation date-time.
+    example: "2026-07-21T12:00:00Z"
+  updatedAt:
+    type: string
+    format: date-time
+    description: Last update date-time.
+    example: "2026-07-21T12:00:00Z"

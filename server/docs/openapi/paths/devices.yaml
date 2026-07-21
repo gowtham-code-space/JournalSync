@@ -1,0 +1,85 @@
+devices:
+  post:
+    tags:
+      - Reminders
+    summary: Register device token
+    description: Save an FCM push token for the user's active device to receive push alerts.
+    operationId: registerDeviceToken
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/DeviceTokenRequest.yaml'
+    responses:
+      '200':
+        description: Device token registered successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Device token registered successfully."
+      '400':
+        description: Invalid request or validation error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+
+devicesByToken:
+  delete:
+    tags:
+      - Reminders
+    summary: Deregister device token
+    description: Remove FCM token to stop sending push alerts to this device.
+    operationId: deleteDeviceToken
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: token
+        in: path
+        required: true
+        description: The FCM token string to remove.
+        schema:
+          type: string
+    responses:
+      '204':
+        description: Device token unregistered successfully.
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '404':
+        description: Token not found.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
+      '500':
+        description: Server error.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ErrorResponse.yaml'
