@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
 import Login from '@/pages/Auth/Login'
+import Signup from '@/pages/Auth/Signup'
 import Dashboard from '@/pages/Dashboard/Dashboard'
 import Stats from '@/pages/Stats/Stats'
 import Templates from '@/pages/Templates/Templates'
@@ -20,6 +21,7 @@ function AppNavigator() {
       <JournalProvider>
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route element={<MainLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/template-log" element={<TemplateLogPage />} />
