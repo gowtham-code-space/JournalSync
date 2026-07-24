@@ -13,9 +13,22 @@ announcements:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '../schemas/Announcement.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "List of active announcements retrieved."
+                data:
+                  type: array
+                  items:
+                    $ref: '../schemas/Announcement.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -47,8 +60,26 @@ announcementsRead:
           type: string
           format: uuid
     responses:
-      '204':
+      '200':
         description: Announcement successfully marked as read.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Announcement successfully marked as read."
+                data:
+                  type: object
+                  example: {}
       '401':
         description: Unauthorized.
         content:
@@ -89,7 +120,20 @@ announcementsAdmin:
         content:
           application/json:
             schema:
-              $ref: '../schemas/Announcement.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Announcement broadcasted successfully."
+                data:
+                  $ref: '../schemas/Announcement.yaml'
       '400':
         description: Invalid request or validation failure.
         content:

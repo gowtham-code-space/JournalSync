@@ -13,9 +13,22 @@ templates:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '../schemas/TemplateStats.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Template statistics retrieved."
+                data:
+                  type: array
+                  items:
+                    $ref: '../schemas/TemplateStats.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -53,7 +66,20 @@ trends:
         content:
           application/json:
             schema:
-              $ref: '../schemas/TrendStats.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Writing trends data retrieved."
+                data:
+                  $ref: '../schemas/TrendStats.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -96,7 +122,20 @@ trendPreferenceById:
         content:
           application/json:
             schema:
-              $ref: '../schemas/TrendPreference.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Trend preference updated successfully."
+                data:
+                  $ref: '../schemas/TrendPreference.yaml'
       '400':
         description: Invalid request body or validation error.
         content:

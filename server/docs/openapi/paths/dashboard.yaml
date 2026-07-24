@@ -13,7 +13,20 @@ streaks:
         content:
           application/json:
             schema:
-              $ref: '../schemas/StreakInfo.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Streaks retrieved successfully."
+                data:
+                  $ref: '../schemas/StreakInfo.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -42,9 +55,22 @@ activeTemplates:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '../schemas/ActiveTemplate.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Active templates list retrieved successfully."
+                data:
+                  type: array
+                  items:
+                    $ref: '../schemas/ActiveTemplate.yaml'
       '401':
         description: Unauthorized.
         content:

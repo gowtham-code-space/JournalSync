@@ -9,4 +9,17 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../schemas/HealthStatus.yaml'
+            type: object
+            required:
+              - success
+              - message
+              - data
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "Health status retrieved successfully."
+              data:
+                $ref: '../schemas/HealthStatus.yaml'

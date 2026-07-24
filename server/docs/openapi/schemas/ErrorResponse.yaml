@@ -2,6 +2,7 @@ type: object
 required:
   - success
   - message
+  - data
 properties:
   success:
     type: boolean
@@ -11,6 +12,10 @@ properties:
     type: string
     description: A user-friendly error message.
     example: "Invalid input data."
+  data:
+    type: "null"
+    description: Always null for error responses.
+    example: null
   code:
     type: string
     description: A machine-readable error code.

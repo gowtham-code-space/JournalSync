@@ -20,6 +20,10 @@ devices:
           application/json:
             schema:
               type: object
+              required:
+                - success
+                - message
+                - data
               properties:
                 success:
                   type: boolean
@@ -27,6 +31,9 @@ devices:
                 message:
                   type: string
                   example: "Device token registered successfully."
+                data:
+                  type: object
+                  example: {}
       '400':
         description: Invalid request or validation error.
         content:
@@ -63,8 +70,26 @@ devicesByToken:
         schema:
           type: string
     responses:
-      '204':
+      '200':
         description: Device token unregistered successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Device token unregistered successfully."
+                data:
+                  type: object
+                  example: {}
       '401':
         description: Unauthorized.
         content:

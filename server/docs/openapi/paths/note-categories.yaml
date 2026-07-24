@@ -13,9 +13,22 @@ categories:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '../schemas/NoteCategory.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "List of note categories retrieved."
+                data:
+                  type: array
+                  items:
+                    $ref: '../schemas/NoteCategory.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -49,7 +62,20 @@ categories:
         content:
           application/json:
             schema:
-              $ref: '../schemas/NoteCategory.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Note category created successfully."
+                data:
+                  $ref: '../schemas/NoteCategory.yaml'
       '400':
         description: Invalid request body or validation failure.
         content:
@@ -104,7 +130,20 @@ categoriesById:
         content:
           application/json:
             schema:
-              $ref: '../schemas/NoteCategory.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Note category updated successfully."
+                data:
+                  $ref: '../schemas/NoteCategory.yaml'
       '400':
         description: Invalid request or validation error.
         content:
@@ -147,8 +186,26 @@ categoriesById:
           type: string
           format: uuid
     responses:
-      '204':
+      '200':
         description: Note category deleted successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Note category deleted successfully."
+                data:
+                  type: object
+                  example: {}
       '401':
         description: Unauthorized.
         content:

@@ -13,9 +13,22 @@ folders:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '../schemas/Folder.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "List of folders retrieved."
+                data:
+                  type: array
+                  items:
+                    $ref: '../schemas/Folder.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -49,7 +62,20 @@ folders:
         content:
           application/json:
             schema:
-              $ref: '../schemas/Folder.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Folder created successfully."
+                data:
+                  $ref: '../schemas/Folder.yaml'
       '400':
         description: Invalid request or validation failure.
         content:
@@ -98,7 +124,20 @@ foldersById:
         content:
           application/json:
             schema:
-              $ref: '../schemas/Folder.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Folder updated successfully."
+                data:
+                  $ref: '../schemas/Folder.yaml'
       '400':
         description: Invalid input/validation failure.
         content:
@@ -141,8 +180,26 @@ foldersById:
           type: string
           format: uuid
     responses:
-      '204':
+      '200':
         description: Folder deleted successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Folder deleted successfully."
+                data:
+                  type: object
+                  example: {}
       '401':
         description: Unauthorized.
         content:
@@ -191,7 +248,20 @@ foldersShare:
         content:
           application/json:
             schema:
-              $ref: '../schemas/FolderAccess.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Folder shared successfully."
+                data:
+                  $ref: '../schemas/FolderAccess.yaml'
       '400':
         description: Invalid request or validation error.
         content:
@@ -240,9 +310,22 @@ foldersAccess:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '../schemas/FolderAccess.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Folder access list retrieved."
+                data:
+                  type: array
+                  items:
+                    $ref: '../schemas/FolderAccess.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -298,7 +381,20 @@ foldersAccessById:
         content:
           application/json:
             schema:
-              $ref: '../schemas/FolderAccess.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Folder access role updated."
+                data:
+                  $ref: '../schemas/FolderAccess.yaml'
       '400':
         description: Invalid role or parameter.
         content:
@@ -348,8 +444,26 @@ foldersAccessById:
           type: string
           format: uuid
     responses:
-      '204':
+      '200':
         description: Folder access revoked successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Folder access revoked successfully."
+                data:
+                  type: object
+                  example: {}
       '401':
         description: Unauthorized.
         content:

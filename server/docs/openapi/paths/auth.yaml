@@ -119,8 +119,26 @@ logout:
     security:
       - BearerAuth: []
     responses:
-      '204':
+      '200':
         description: Successfully logged out.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Successfully logged out."
+                data:
+                  type: object
+                  example: {}
       '401':
         description: Unauthorized.
         content:
@@ -182,7 +200,20 @@ me:
         content:
           application/json:
             schema:
-              $ref: '../schemas/User.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "User details retrieved successfully."
+                data:
+                  $ref: '../schemas/User.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -216,6 +247,10 @@ verifyEmail:
           application/json:
             schema:
               type: object
+              required:
+                - success
+                - message
+                - data
               properties:
                 success:
                   type: boolean
@@ -223,6 +258,9 @@ verifyEmail:
                 message:
                   type: string
                   example: "Email verified successfully."
+                data:
+                  type: object
+                  example: {}
       '400':
         description: Invalid or expired token.
         content:
@@ -256,6 +294,10 @@ forgotPassword:
           application/json:
             schema:
               type: object
+              required:
+                - success
+                - message
+                - data
               properties:
                 success:
                   type: boolean
@@ -263,6 +305,9 @@ forgotPassword:
                 message:
                   type: string
                   example: "Password reset link sent to your email."
+                data:
+                  type: object
+                  example: {}
       '400':
         description: Invalid email or validation error.
         content:
@@ -302,6 +347,10 @@ resetPassword:
           application/json:
             schema:
               type: object
+              required:
+                - success
+                - message
+                - data
               properties:
                 success:
                   type: boolean
@@ -309,6 +358,9 @@ resetPassword:
                 message:
                   type: string
                   example: "Password reset successfully."
+                data:
+                  type: object
+                  example: {}
       '400':
         description: Invalid input/weak password/invalid token.
         content:

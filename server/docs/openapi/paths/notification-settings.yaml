@@ -12,7 +12,20 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../schemas/NotificationSettings.yaml'
+            type: object
+            required:
+              - success
+              - message
+              - data
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "Notification settings retrieved successfully."
+              data:
+                $ref: '../schemas/NotificationSettings.yaml'
     '401':
       description: Unauthorized.
       content:
@@ -46,7 +59,20 @@ patch:
       content:
         application/json:
           schema:
-            $ref: '../schemas/NotificationSettings.yaml'
+            type: object
+            required:
+              - success
+              - message
+              - data
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "Notification settings updated successfully."
+              data:
+                $ref: '../schemas/NotificationSettings.yaml'
     '400':
       description: Invalid request parameter validation.
       content:

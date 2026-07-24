@@ -13,9 +13,22 @@ presets:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '../schemas/TemplatePreset.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "List of preset templates retrieved."
+                data:
+                  type: array
+                  items:
+                    $ref: '../schemas/TemplatePreset.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -52,7 +65,20 @@ presetsById:
         content:
           application/json:
             schema:
-              $ref: '../schemas/TemplatePreset.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Preset template details retrieved."
+                data:
+                  $ref: '../schemas/TemplatePreset.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -95,9 +121,22 @@ templates:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '../schemas/Template.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "List of templates retrieved."
+                data:
+                  type: array
+                  items:
+                    $ref: '../schemas/Template.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -131,7 +170,20 @@ templates:
         content:
           application/json:
             schema:
-              $ref: '../schemas/Template.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Custom template created."
+                data:
+                  $ref: '../schemas/Template.yaml'
       '400':
         description: Invalid request or validation error.
         content:
@@ -174,7 +226,20 @@ templatesById:
         content:
           application/json:
             schema:
-              $ref: '../schemas/Template.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Template details retrieved."
+                data:
+                  $ref: '../schemas/Template.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -222,7 +287,20 @@ templatesById:
         content:
           application/json:
             schema:
-              $ref: '../schemas/Template.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Template updated successfully."
+                data:
+                  $ref: '../schemas/Template.yaml'
       '400':
         description: Invalid request or validation error.
         content:
@@ -265,8 +343,26 @@ templatesById:
           type: string
           format: uuid
     responses:
-      '204':
+      '200':
         description: Template deleted successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Template deleted successfully."
+                data:
+                  type: object
+                  example: {}
       '401':
         description: Unauthorized.
         content:
@@ -309,9 +405,22 @@ templatesVersions:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '../schemas/TemplateVersion.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "List of versions retrieved."
+                data:
+                  type: array
+                  items:
+                    $ref: '../schemas/TemplateVersion.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -359,7 +468,20 @@ templatesVersions:
         content:
           application/json:
             schema:
-              $ref: '../schemas/TemplateVersion.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "New template version created."
+                data:
+                  $ref: '../schemas/TemplateVersion.yaml'
       '400':
         description: Invalid request or validation error.
         content:
@@ -415,7 +537,20 @@ templatesVersionsById:
         content:
           application/json:
             schema:
-              $ref: '../schemas/TemplateVersion.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Template version details retrieved."
+                data:
+                  $ref: '../schemas/TemplateVersion.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -458,9 +593,22 @@ templatesLogs:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '../schemas/TemplateLog.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "List of template logs retrieved."
+                data:
+                  type: array
+                  items:
+                    $ref: '../schemas/TemplateLog.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -508,7 +656,20 @@ templatesLogs:
         content:
           application/json:
             schema:
-              $ref: '../schemas/TemplateLog.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Template log created successfully."
+                data:
+                  $ref: '../schemas/TemplateLog.yaml'
       '400':
         description: Invalid request parameter validation.
         content:
@@ -557,7 +718,20 @@ logsById:
         content:
           application/json:
             schema:
-              $ref: '../schemas/TemplateLog.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Template log details retrieved."
+                data:
+                  $ref: '../schemas/TemplateLog.yaml'
       '401':
         description: Unauthorized.
         content:
@@ -605,7 +779,20 @@ logsById:
         content:
           application/json:
             schema:
-              $ref: '../schemas/TemplateLog.yaml'
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Template log details updated."
+                data:
+                  $ref: '../schemas/TemplateLog.yaml'
       '400':
         description: Invalid request or validation error.
         content:
@@ -648,8 +835,26 @@ logsById:
           type: string
           format: uuid
     responses:
-      '204':
+      '200':
         description: Template log deleted successfully.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - message
+                - data
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Template log deleted successfully."
+                data:
+                  type: object
+                  example: {}
       '401':
         description: Unauthorized.
         content:
