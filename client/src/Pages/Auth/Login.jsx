@@ -218,6 +218,21 @@ export default function Login() {
               >
                 Sign In
               </button>
+
+              <div className="text-center pt-2">
+                <button
+                  type="button"
+                  onClick={() => navigate('/signup')}
+                  style={{
+                    fontFamily: tokens.typography.bodyMD.fontFamily,
+                    fontSize: tokens.typography.bodyMD.fontSize,
+                    color: tokens.colors.textSecondary,
+                  }}
+                  className="font-medium hover:opacity-80 transition-opacity"
+                >
+                  Don't have an account? Sign Up
+                </button>
+              </div>
             </form>
           </div>
         </div>
